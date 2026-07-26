@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rancangan BIVAK — Marketplace Barter Gear Outdoor</title>
+<meta name="description" content="Dokumen rancangan MVP BIVAK, marketplace barter gear outdoor untuk ekosistem Pintu Angin dan komunitas Reichas Chelebes.">
+<meta name="theme-color" content="#2783DE">
+<meta property="og:title" content="Rancangan BIVAK — Marketplace Barter Gear Outdoor">
+<meta property="og:description" content="Barter Item &amp; Value Antar Komunitas. Dokumen rancangan MVP.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+  :root{
+    --text:#2C2C2B; --muted:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
+    --surface2:#F0EFED; --border:#E6E5E3;
+    --blue:#2783DE; --blue-soft:#E5F2FC;
+    --green:#46A171; --green-soft:#E8F1EC;
+    --orange:#D5803B; --orange-soft:#FBEBDE;
+    --red:#E56458; --red-soft:#FCE9E7;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--canvas); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.5;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px}
+
+  /* HERO */
+  header.hero{
+    background:var(--soft); border-bottom:1px solid var(--border);
+    padding:64px 0 48px;
+  }
+  .eyebrow{
+    display:inline-block; font-size:14px; font-weight:600; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--blue);
+    background:var(--blue-soft); border-radius:8px; padding:6px 12px; margin-bottom:24px;
+  }
+  h1{font-size:44px; line-height:1.1; margin:0 0 12px; letter-spacing:-.02em}
+  .sub{font-size:20px; color:var(--muted); margin:0 0 24px}
+  .lede{max-width:720px; font-size:17px; margin:0}
+  .hero-meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:32px}
+  .chip{
+    font-size:14px; color:var(--muted); background:var(--canvas);
+    border:1px solid var(--border); border-radius:999px; padding:6px 14px;
+  }
+
+  /* NAV */
+  nav.toc{
+    position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+  }
+  nav.toc ol{
+    list-style:none; margin:0; padding:0; display:flex; gap:4px;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+  }
+  nav.toc a{
+    display:inline-block; white-space:nowrap; padding:14px 12px;
+    font-size:14px; color:var(--muted); text-decoration:none; border-bottom:2px solid transparent;
+  }
+  nav.toc a:hover,nav.toc a:focus{color:var(--blue); border-bottom-color:var(--blue)}
+
+  section{padding:48px 0; border-bottom:1px solid var(--border)}
+  section:last-of-type{border-bottom:0}
+  .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:8px; background:var(--blue);
+    color:#fff; font-size:14px; font-weight:600; margin-right:12px; flex:0 0 auto;
+  }
+  h2{display:flex; align-items:flex-start; font-size:26px; line-height:1.2; margin:0 0 8px; letter-spacing:-.01em}
+  h2 .num{margin-top:2px}
+  .section-note{color:var(--muted); margin:0 0 28px; max-width:720px}
+  h3{font-size:16px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 12px}
+
+  ul.clean{list-style:none; margin:0; padding:0}
+  ul.clean li{position:relative; padding:6px 0 6px 22px}
+  ul.clean li::before{
+    content:""; position:absolute; left:4px; top:15px; width:6px; height:6px;
+    border-radius:50%; background:var(--blue);
+  }
+  ul.clean.g li::before{background:var(--green)}
+  ul.clean.o li::before{background:var(--orange)}
+  ul.clean.r li::before{background:var(--red)}
+
+  .grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:24px}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+  .card{
+    background:var(--canvas); border:1px solid var(--border); border-radius:12px; padding:24px;
+  }
+  .card.soft{background:var(--soft)}
+  .card-title{font-weight:600; font-size:17px; margin:0 0 12px; display:flex; align-items:center; gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .dot.b{background:var(--blue)} .dot.g{background:var(--green)}
+  .dot.o{background:var(--orange)} .dot.r{background:var(--red)}
+
+  .value-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+  .value{background:var(--blue-soft); border-radius:12px; padding:20px}
+  .value:nth-child(2){background:var(--green-soft)}
+  .value:nth-child(3){background:var(--orange-soft)}
+  .value:nth-child(4){background:var(--surface2)}
+  .value strong{display:block; margin-bottom:4px}
+  .value span{font-size:15px; color:#55524e}
+
+  /* FLOW */
+  .flow{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  .step{
+    background:var(--soft); border:1px solid var(--border); border-radius:8px;
+    padding:14px 16px; font-size:15px; font-weight:500; display:flex; align-items:center; gap:12px;
+  }
+  .step i{
+    font-style:normal; color:var(--blue); font-weight:700; font-size:12px;
+    background:var(--blue-soft); border-radius:6px; padding:4px 7px; flex:0 0 auto;
+  }
+
+  /* TABLE */
+  .table-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:12px}
+  table{border-collapse:collapse; width:100%; min-width:720px; font-size:15px}
+  th,td{text-align:left; padding:14px 16px; border-bottom:1px solid var(--border); vertical-align:top}
+  thead th{background:var(--surface2); font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:nth-child(even){background:var(--soft)}
+  code{font-family:Menlo,Consolas,monospace; font-size:13.5px; color:#3f6f9c}
+  td.ent code{color:var(--blue); font-weight:600}
+
+  /* STATUS PIPELINE */
+  .pipe{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px}
+  .pill{
+    border-radius:999px; padding:6px 14px; font-size:14px; font-weight:500;
+    background:var(--surface2); color:var(--text);
+  }
+  .pill.b{background:var(--blue-soft); color:#1d5f9f}
+  .pill.g{background:var(--green-soft); color:#2f7550}
+  .pill.o{background:var(--orange-soft); color:#9c5a24}
+  .pill.r{background:var(--red-soft); color:#a8423a}
+  .pipe-sep{color:var(--muted); font-size:14px}
+
+  /* PHASES */
+  .phases{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+  .phase{border:1px solid var(--border); border-radius:12px; padding:20px; background:var(--canvas)}
+  .phase .tag{
+    font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:8px; display:block;
+  }
+  .phase:nth-child(2) .tag{color:var(--green)}
+  .phase:nth-child(3) .tag{color:var(--orange)}
+  .phase:nth-child(4) .tag{color:#8a5cc4}
+  .phase h4{margin:0 0 12px; font-size:16px}
+  .phase ul{margin:0; padding-left:18px; font-size:14.5px; color:#55524e}
+  .phase li{margin-bottom:6px}
+
+  .checklist li{position:relative; padding:8px 0 8px 30px; list-style:none}
+  .checklist{margin:0;padding:0}
+  .checklist li::before{
+    content:"\2713"; position:absolute; left:0; top:8px; width:20px; height:20px;
+    border-radius:6px; background:var(--green-soft); color:var(--green);
+    font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+
+  .callout{
+    border:1px solid var(--border); border-left:3px solid var(--orange);
+    background:var(--orange-soft); border-radius:8px; padding:16px 20px; font-size:15px;
+  }
+  .cats{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px}
+  .cat{background:var(--surface2); border-radius:8px; padding:8px 12px; font-size:14px}
+
+  footer{padding:32px 0 48px; color:var(--muted); font-size:14px;
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; border-top:1px solid var(--border)}
+
+  @media (max-width:820px){
+    .wrap{padding:0 20px}
+    h1{font-size:32px}
+    .sub{font-size:18px}
+    .grid2,.grid3,.value-grid,.phases,.flow{grid-template-columns:1fr}
+    section{padding:36px 0}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Dokumen Rancangan MVP</span>
+    <h1>Rancangan BIVAK</h1>
+    <p class="sub">Marketplace Barter Gear Outdoor — <em>Barter Item &amp; Value Antar Komunitas</em></p>
+    <p class="lede">BIVAK adalah marketplace barter gear outdoor. Pengguna menawarkan barang, menambahkan nilai taksasi, menyatakan barang incaran, lalu mengajukan barter langsung atau barter dengan selisih nilai.</p>
+    <div class="hero-meta">
+      <span class="chip">Ekosistem Pintu Angin</span>
+      <span class="chip">Komunitas Reichas Chelebes</span>
+      <span class="chip">Makassar · Gowa · Sulawesi Selatan</span>
+      <span class="chip">Supabase Free Plan</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Daftar isi">
+  <div class="wrap">
+    <ol>
+      <li><a href="#tujuan">1. Tujuan</a></li>
+      <li><a href="#lingkup">2. Lingkup</a></li>
+      <li><a href="#alur">3. Alur</a></li>
+      <li><a href="#data">4. Model Data</a></li>
+      <li><a href="#status">5. Status</a></li>
+      <li><a href="#tampilan">6. Tampilan</a></li>
+      <li><a href="#keamanan">7. Keamanan</a></li>
+      <li><a href="#optimasi">8. Optimasi</a></li>
+      <li><a href="#tahapan">9. Tahapan</a></li>
+      <li><a href="#rilis">10. Rilis</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main>
+
+<section id="tujuan">
+  <div class="wrap">
+    <h2><span class="num">1</span>Tujuan MVP</h2>
+    <p class="section-note">Membangun marketplace barter khusus gear outdoor yang terhubung ke Pintu Angin, dimulai dari komunitas Reichas Chelebes dan wilayah Makassar–Gowa–Sulawesi Selatan.</p>
+    <h3>Nilai utama</h3>
+    <div class="value-grid">
+      <div class="value"><strong>Tukar, bukan hanya jual</strong><span>Pengguna dapat menukar gear sesuai kebutuhan nyata di lapangan.</span></div>
+      <div class="value"><strong>Nilai taksasi</strong><span>Negosiasi menjadi lebih jelas, terukur, dan adil bagi kedua pihak.</span></div>
+      <div class="value"><strong>Wishlist &amp; pencocokan</strong><span>Membantu pengguna menemukan pasangan barter yang tepat.</span></div>
+      <div class="value"><strong>Reputasi komunitas</strong><span>Menekan risiko barang tidak sesuai deskripsi.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="lingkup">
+  <div class="wrap">
+    <h2><span class="num">2</span>Ruang Lingkup Rilis Pertama</h2>
+    <p class="section-note">Batas jelas antara yang dibangun sekarang dan yang ditunda agar MVP tetap ringan.</p>
+    <div class="grid3">
+      <div class="card">
+        <p class="card-title"><span class="dot b"></span>Fitur untuk pengguna</p>
+        <ul class="clean">
+          <li>Login Google memakai akun Pintu Angin yang sudah ada.</li>
+          <li>Profil barter: nama tampil, kota/area transaksi, foto profil, reputasi.</li>
+          <li>Tambah barang: judul, kategori, kondisi, foto, deskripsi, nilai taksasi, lokasi.</li>
+          <li>Tentukan barang incaran atau wishlist pada setiap listing.</li>
+          <li>Jelajah, pencarian, filter kategori, kondisi, lokasi, dan rentang nilai.</li>
+          <li>Ajukan barter dengan satu atau beberapa barang milik pengguna.</li>
+          <li>Selisih nilai tunai sebagai usulan negosiasi, bukan pembayaran dalam aplikasi.</li>
+          <li>Chat penawaran dan pembaruan status transaksi.</li>
+          <li>Favorit, laporkan listing, blokir pengguna, dan hapus listing pribadi.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card-title"><span class="dot g"></span>Fitur petugas/admin</p>
+        <ul class="clean g">
+          <li>Moderasi listing, foto, dan laporan pengguna.</li>
+          <li>Tanda akun tepercaya atau verifikasi komunitas.</li>
+          <li>Daftar transaksi bermasalah dan alasan laporan.</li>
+          <li>Statistik dasar: listing aktif, barter selesai, pengguna aktif, kategori populer.</li>
+        </ul>
+      </div>
+      <div class="card soft">
+        <p class="card-title"><span class="dot r"></span>Di luar MVP</p>
+        <ul class="clean r">
+          <li>Rekening bersama/escrow dan pembayaran dalam aplikasi.</li>
+          <li>Jasa kurir/logistik terintegrasi.</li>
+          <li>Penilaian taksasi otomatis berbasis AI.</li>
+          <li>Komisi transaksi atau iklan berbayar.</li>
+          <li>Pengiriman antar-kota yang dikelola platform.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="alur">
+  <div class="wrap">
+    <h2><span class="num">3</span>Alur Pengguna</h2>
+    <p class="section-note">Sembilan langkah dari masuk aplikasi sampai barter dinyatakan selesai.</p>
+    <div class="flow">
+      <span class="step"><i>01</i>Login Pintu Angin</span>
+      <span class="step"><i>02</i>Isi profil BIVAK</span>
+      <span class="step"><i>03</i>Unggah barang + nilai taksasi</span>
+      <span class="step"><i>04</i>Isi barang incaran</span>
+      <span class="step"><i>05</i>Jelajah &amp; pencocokan barter</span>
+      <span class="step"><i>06</i>Ajukan penawaran</span>
+      <span class="step"><i>07</i>Chat &amp; negosiasi</span>
+      <span class="step"><i>08</i>Atur temu/kirim mandiri</span>
+      <span class="step"><i>09</i>Konfirmasi selesai</span>
+    </div>
+    <p class="callout" style="margin-top:24px">Jika belum sepakat: penawaran dapat diubah, ditolak, atau dibatalkan tanpa mengubah listing asal.</p>
+  </div>
+</section>
+
+<section id="data">
+  <div class="wrap">
+    <h2><span class="num">4</span>Model Data Supabase</h2>
+    <p class="section-note">Sembilan tabel inti yang menopang listing, penawaran, chat, transaksi, dan moderasi.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th style="width:24%">Entitas</th><th style="width:26%">Fungsi</th><th>Kolom inti</th></tr></thead>
+        <tbody>
+          <tr><td class="ent"><code>barter_profiles</code></td><td>Profil pengguna BIVAK</td><td><code>user_id, display_name, city, avatar_url, reputation_score, verified</code></td></tr>
+          <tr><td class="ent"><code>barter_listings</code></td><td>Barang yang ditawarkan</td><td><code>id, owner_id, title, category, condition, description, appraised_value, city, status</code></td></tr>
+          <tr><td class="ent"><code>barter_listing_photos</code></td><td>Foto setiap barang</td><td><code>id, listing_id, storage_path, sort_order</code></td></tr>
+          <tr><td class="ent"><code>barter_wants</code></td><td>Barang incaran pemilik listing</td><td><code>id, listing_id, category, keyword, minimum_value, maximum_value</code></td></tr>
+          <tr><td class="ent"><code>barter_offers</code></td><td>Penawaran barter</td><td><code>id, target_listing_id, proposer_id, cash_adjustment, note, status</code></td></tr>
+          <tr><td class="ent"><code>barter_offer_items</code></td><td>Barang dalam penawaran</td><td><code>offer_id, listing_id, appraised_value_snapshot</code></td></tr>
+          <tr><td class="ent"><code>barter_messages</code></td><td>Chat khusus penawaran</td><td><code>id, offer_id, sender_id, body, created_at</code></td></tr>
+          <tr><td class="ent"><code>barter_transactions</code></td><td>Catatan barter disepakati</td><td><code>id, offer_id, status, agreed_at, completed_at</code></td></tr>
+          <tr><td class="ent"><code>barter_reports</code></td><td>Laporan listing/pengguna</td><td><code>id, reporter_id, target_type, target_id, reason, status</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="status">
+  <div class="wrap">
+    <h2><span class="num">5</span>Status Listing dan Transaksi</h2>
+    <p class="section-note">Alur status yang dipakai untuk menjaga satu listing tidak berbenturan di dua transaksi.</p>
+    <div class="grid2">
+      <div class="card">
+        <p class="card-title"><span class="dot b"></span>Status listing</p>
+        <div class="pipe">
+          <span class="pill">Draf</span><span class="pipe-sep">→</span>
+          <span class="pill b">Aktif</span><span class="pipe-sep">→</span>
+          <span class="pill o">Dicadangkan</span><span class="pipe-sep">→</span>
+          <span class="pill g">Selesai</span><span class="pipe-sep">/</span>
+          <span class="pill">Diarsipkan</span>
+        </div>
+      </div>
+      <div class="card">
+        <p class="card-title"><span class="dot o"></span>Status penawaran barter</p>
+        <div class="pipe">
+          <span class="pill b">Diajukan</span><span class="pipe-sep">→</span>
+          <span class="pill o">Negosiasi</span><span class="pipe-sep">→</span>
+          <span class="pill b">Disetujui</span><span class="pipe-sep">→</span>
+          <span class="pill">Pertemuan/Pengiriman</span><span class="pipe-sep">→</span>
+          <span class="pill g">Selesai</span>
+        </div>
+        <div class="pipe" style="margin-top:12px">
+          <span class="pill">Diajukan / Negosiasi</span><span class="pipe-sep">→</span>
+          <span class="pill r">Ditolak</span><span class="pipe-sep">atau</span>
+          <span class="pill r">Dibatalkan</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:24px">
+      <h3>Aturan penting</h3>
+      <div class="grid2">
+        <ul class="clean">
+          <li>Satu listing tidak dapat masuk ke transaksi selesai lebih dari satu kali.</li>
+          <li>Pemilik listing dapat menerima satu penawaran dan otomatis mencadangkan barang.</li>
+        </ul>
+        <ul class="clean">
+          <li>Penawaran lain diberi status tidak terpilih setelah transaksi selesai.</li>
+          <li>Nilai taksasi adalah referensi; keputusan akhir disepakati kedua pihak.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tampilan">
+  <div class="wrap">
+    <h2><span class="num">6</span>Tampilan dan Navigasi</h2>
+    <p class="section-note">Lima layar utama yang menjadi tulang punggung pengalaman BIVAK.</p>
+    <div class="grid3">
+      <div class="card soft"><p class="card-title">Beranda BIVAK</p><p style="margin:0;color:#55524e;font-size:15px">Pencarian, kategori, listing terbaru, dan bagian “Cocok untukmu”.</p></div>
+      <div class="card soft"><p class="card-title">Detail barang</p><p style="margin:0;color:#55524e;font-size:15px">Foto, kondisi, nilai taksasi, barang incaran, profil pemilik, tombol Ajukan Barter.</p></div>
+      <div class="card soft"><p class="card-title">Tambah barang</p><p style="margin:0;color:#55524e;font-size:15px">Formulir listing dan upload maksimal tiga foto terkompresi.</p></div>
+      <div class="card soft"><p class="card-title">Penawaran</p><p style="margin:0;color:#55524e;font-size:15px">Masuk, terkirim, negosiasi, disetujui, dan selesai.</p></div>
+      <div class="card soft"><p class="card-title">Profil BIVAK</p><p style="margin:0;color:#55524e;font-size:15px">Barang saya, wishlist, reputasi, dan riwayat barter.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="keamanan">
+  <div class="wrap">
+    <h2><span class="num">7</span>Keamanan dan Moderasi</h2>
+    <p class="section-note">Row Level Security menjadi lapisan utama; moderasi manusia melengkapi.</p>
+    <div class="grid2">
+      <ul class="clean">
+        <li>Seluruh tabel menggunakan Row Level Security (RLS).</li>
+        <li>Hanya pemilik yang dapat mengubah atau mengarsipkan listing sendiri.</li>
+        <li>Hanya pihak penawaran yang dapat membaca chat penawaran.</li>
+        <li>Foto divalidasi ukuran, jenis file, dan jumlah maksimum sebelum diunggah.</li>
+      </ul>
+      <ul class="clean">
+        <li>Listing dibatasi untuk mencegah spam, contoh maksimal lima listing baru per hari per akun.</li>
+        <li>Tombol Laporkan tersedia pada listing, penawaran, dan profil.</li>
+        <li>Transaksi, pembayaran, dan pengiriman dilakukan atas kesepakatan pengguna.</li>
+      </ul>
+    </div>
+    <p class="callout" style="margin-top:24px"><strong>Catatan penting:</strong> BIVAK bukan escrow pada MVP. Aplikasi tidak memproses pembayaran maupun menjamin pengiriman.</p>
+  </div>
+</section>
+
+<section id="optimasi">
+  <div class="wrap">
+    <h2><span class="num">8</span>Optimasi Paket Supabase Free</h2>
+    <p class="section-note">Batasan teknis yang dipilih agar biaya tetap nol pada rilis terbatas.</p>
+    <div class="grid2">
+      <div class="card">
+        <p class="card-title"><span class="dot g"></span>Media &amp; storage</p>
+        <ul class="clean g">
+          <li>Maksimal tiga foto per listing.</li>
+          <li>Foto dikompres di perangkat ke WebP, target 200–400 KB per foto.</li>
+          <li>Bucket privat dengan URL bertanda tangan saat diperlukan.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="card-title"><span class="dot b"></span>Query &amp; realtime</p>
+        <ul class="clean">
+          <li>Listing memakai pagination 20 item per halaman.</li>
+          <li>Chat memuat 30–50 pesan terakhir, kemudian hanya pesan baru.</li>
+          <li>Realtime hanya aktif saat layar penawaran/chat terbuka.</li>
+          <li>Indeks untuk status listing, kategori, kota, <code>owner_id</code>, dan <code>created_at</code>.</li>
+          <li>Pantau database, storage, dan egress mingguan.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tahapan">
+  <div class="wrap">
+    <h2><span class="num">9</span>Tahapan Pembangunan</h2>
+    <p class="section-note">Empat tahap berurutan, dari fondasi keamanan sampai peluncuran komunitas.</p>
+    <div class="phases">
+      <div class="phase">
+        <span class="tag">Tahap 1</span>
+        <h4>Fondasi data dan keamanan</h4>
+        <ul>
+          <li>Migration SQL seluruh tabel, indeks, bucket, dan RLS.</li>
+          <li>Endpoint aman untuk upload foto, listing, dan penawaran.</li>
+          <li>Moderasi dasar dan pembatasan spam.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <span class="tag">Tahap 2</span>
+        <h4>Marketplace inti</h4>
+        <ul>
+          <li>Beranda BIVAK dari dummy yang disetujui.</li>
+          <li>Tambah/edit/arsip listing.</li>
+          <li>Detail barang, pencarian, filter, dan favorit.</li>
+          <li>Wishlist/barang incaran.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <span class="tag">Tahap 3</span>
+        <h4>Barter dan negosiasi</h4>
+        <ul>
+          <li>Pencocokan listing berdasarkan kategori, kata kunci, nilai, lokasi.</li>
+          <li>Pengajuan barter serta selisih nilai.</li>
+          <li>Status penawaran dan chat privat.</li>
+          <li>Konfirmasi barter selesai dan penilaian dua arah.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <span class="tag">Tahap 4</span>
+        <h4>Admin dan peluncuran</h4>
+        <ul>
+          <li>Panel moderasi BIVAK di Panel Admin.</li>
+          <li>Uji RLS: pemilik, penawar, pengguna biasa, admin.</li>
+          <li>Uji upload foto dari HP, koneksi lambat, perangkat berbeda.</li>
+          <li>Rilis terbatas untuk komunitas Reichas Chelebes.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rilis">
+  <div class="wrap">
+    <h2><span class="num">10</span>Kriteria Siap Rilis Terbatas</h2>
+    <p class="section-note">Semua butir harus terpenuhi sebelum BIVAK dibuka ke komunitas.</p>
+    <div class="grid2">
+      <ul class="checklist">
+        <li>Pengguna dapat membuat listing dengan foto, nilai taksasi, dan barang incaran.</li>
+        <li>Pengguna lain dapat mengajukan barter dan melihat selisih nilai.</li>
+        <li>Kedua pihak dapat bernegosiasi dalam chat privat.</li>
+        <li>Pengguna dapat menyelesaikan atau membatalkan transaksi.</li>
+      </ul>
+      <ul class="checklist">
+        <li>Admin dapat meninjau laporan dan mengarsipkan listing bermasalah.</li>
+        <li>Tidak ada akses silang ke listing pribadi, chat privat, atau data penawaran pengguna lain.</li>
+        <li>Storage foto, pagination, dan chat berada dalam batas Supabase Free.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top:32px">
+      <h3>Keputusan produk MVP</h3>
+      <div class="grid2">
+        <div class="card soft">
+          <p class="card-title">Kategori awal</p>
+          <div class="cats">
+            <span class="cat">Carrier</span><span class="cat">Tas daypack</span><span class="cat">Sepatu gunung</span>
+            <span class="cat">Sleeping bag</span><span class="cat">Tenda</span><span class="cat">Matras</span>
+            <span class="cat">Trekking pole</span><span class="cat">Headlamp</span><span class="cat">Jas hujan</span>
+            <span class="cat">Perlengkapan memasak</span>
+          </div>
+        </div>
+        <div class="card soft">
+          <p class="card-title">Ketentuan lain</p>
+          <ul class="clean">
+            <li>Nilai mata uang memakai Rupiah sebagai taksasi, bukan saldo/dompet digital.</li>
+            <li>Selisih nilai adalah kesepakatan di luar aplikasi.</li>
+            <li>Wilayah awal: Makassar, Gowa, Maros, Takalar, dan komunitas pendaki Sulawesi Selatan.</li>
+            <li>Nama publik: <strong>BIVAK — Barter Item &amp; Value Antar Komunitas</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; width:100%">
+    <span>BIVAK — Barter Item &amp; Value Antar Komunitas</span>
+    <span>Dokumen rancangan MVP · Ekosistem Pintu Angin</span>
+  </div>
+</footer>
+
+</body>
+</html>
