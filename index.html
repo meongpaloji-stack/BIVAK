@@ -3,525 +3,1046 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rancangan BIVAK — Marketplace Barter Gear Outdoor</title>
-<meta name="description" content="Dokumen rancangan MVP BIVAK, marketplace barter gear outdoor untuk ekosistem Pintu Angin dan komunitas Reichas Chelebes.">
+<title>BIVAK — Marketplace Barter Gear Outdoor</title>
+<meta name="description" content="BIVAK — Barter Item & Value Antar Komunitas. Prototipe marketplace barter gear outdoor untuk ekosistem Pintu Angin.">
 <meta name="theme-color" content="#2783DE">
-<meta property="og:title" content="Rancangan BIVAK — Marketplace Barter Gear Outdoor">
-<meta property="og:description" content="Barter Item &amp; Value Antar Komunitas. Dokumen rancangan MVP.">
-<meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-
 <style>
-  :root{
-    --text:#2C2C2B; --muted:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
-    --surface2:#F0EFED; --border:#E6E5E3;
-    --blue:#2783DE; --blue-soft:#E5F2FC;
-    --green:#46A171; --green-soft:#E8F1EC;
-    --orange:#D5803B; --orange-soft:#FBEBDE;
-    --red:#E56458; --red-soft:#FCE9E7;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0; background:var(--canvas); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-size:16px; line-height:1.5;
-  }
-  .wrap{max-width:1040px;margin:0 auto;padding:0 32px}
+:root{
+  --text:#2C2C2B; --muted:#7D7A75; --canvas:#FFFFFF; --soft:#F9F8F7;
+  --surface2:#F0EFED; --border:#E6E5E3;
+  --blue:#2783DE; --blue-soft:#E5F2FC;
+  --green:#46A171; --green-soft:#E8F1EC;
+  --orange:#D5803B; --orange-soft:#FBEBDE;
+  --red:#E56458; --red-soft:#FCE9E7;
+  --purple:#8A5CC4; --purple-soft:#F1EAFB;
+  --shadow:0 1px 2px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.04);
+  --radius:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--canvas); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%; display:block}
+button{font:inherit; cursor:pointer}
+input,select,textarea{font:inherit; color:inherit}
+.wrap{max-width:1120px; margin:0 auto; padding:0 32px}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
 
-  /* HERO */
-  header.hero{
-    background:var(--soft); border-bottom:1px solid var(--border);
-    padding:64px 0 48px;
-  }
-  .eyebrow{
-    display:inline-block; font-size:14px; font-weight:600; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--blue);
-    background:var(--blue-soft); border-radius:8px; padding:6px 12px; margin-bottom:24px;
-  }
-  h1{font-size:44px; line-height:1.1; margin:0 0 12px; letter-spacing:-.02em}
-  .sub{font-size:20px; color:var(--muted); margin:0 0 24px}
-  .lede{max-width:720px; font-size:17px; margin:0}
-  .hero-meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:32px}
-  .chip{
-    font-size:14px; color:var(--muted); background:var(--canvas);
-    border:1px solid var(--border); border-radius:999px; padding:6px 14px;
-  }
+/* ---------- APP BAR ---------- */
+.appbar{
+  position:sticky; top:0; z-index:40; background:rgba(255,255,255,.9);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--border);
+}
+.appbar .row{display:flex; align-items:center; gap:16px; height:64px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; flex:0 0 auto}
+.brand .mark{width:32px; height:32px; border-radius:9px; background:var(--blue); display:grid; place-items:center}
+.brand b{font-size:17px; letter-spacing:.02em}
+.brand small{display:block; font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; line-height:1}
+.tabs{display:flex; gap:2px; margin-left:8px; overflow-x:auto; flex:1 1 auto; min-width:0; scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  background:none; border:0; padding:10px 12px; border-radius:8px; color:var(--muted);
+  font-size:14.5px; white-space:nowrap; position:relative;
+}
+.tabs button:hover{background:var(--soft); color:var(--text)}
+.tabs button[aria-selected="true"]{background:var(--blue-soft); color:#1d5f9f; font-weight:600}
+.tabs .badge{
+  display:inline-block; min-width:18px; margin-left:6px; padding:0 5px; border-radius:999px;
+  background:var(--red); color:#fff; font-size:11px; font-weight:700; line-height:18px; text-align:center;
+}
+.spacer{flex:1}
+.btn{
+  white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px;
+  padding:0 18px; border-radius:8px; border:1px solid var(--border); background:var(--canvas);
+  color:var(--text); font-size:14.5px; font-weight:500; text-decoration:none; transition:.15s;
+}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--blue); border-color:var(--blue); color:#fff}
+.btn.primary:hover{background:#1f74c8}
+.btn.ghost{border-color:transparent; background:transparent}
+.btn.ghost:hover{background:var(--soft)}
+.btn.danger{color:#a8423a; border-color:#f0cfcb; background:var(--red-soft)}
+.btn.ok{color:#2f7550; border-color:#c9e2d3; background:var(--green-soft)}
+.btn.sm{min-height:36px; padding:0 12px; font-size:13.5px}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.me{display:flex; align-items:center; gap:10px; padding-left:12px; border-left:1px solid var(--border)}
+.avatar{
+  width:36px; height:36px; border-radius:50%; display:grid; place-items:center;
+  background:var(--blue-soft); color:#1d5f9f; font-weight:700; font-size:13.5px; flex:0 0 auto;
+}
+.avatar.lg{width:52px; height:52px; font-size:17px}
+.me .who{font-size:13.5px; line-height:1.25}
+.me .who span{display:block; color:var(--muted); font-size:12.5px}
 
-  /* NAV */
-  nav.toc{
-    position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92);
-    backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
-  }
-  nav.toc ol{
-    list-style:none; margin:0; padding:0; display:flex; gap:4px;
-    overflow-x:auto; -webkit-overflow-scrolling:touch;
-  }
-  nav.toc a{
-    display:inline-block; white-space:nowrap; padding:14px 12px;
-    font-size:14px; color:var(--muted); text-decoration:none; border-bottom:2px solid transparent;
-  }
-  nav.toc a:hover,nav.toc a:focus{color:var(--blue); border-bottom-color:var(--blue)}
+/* ---------- HERO ---------- */
+.hero{background:var(--soft); border-bottom:1px solid var(--border); padding:36px 0 28px}
+.hero .inner{display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--blue); background:var(--blue-soft);
+  border-radius:999px; padding:6px 12px; margin-bottom:16px;
+}
+h1{font-size:38px; line-height:1.08; letter-spacing:-.02em; margin:0 0 10px}
+.hero p{margin:0; color:var(--muted); font-size:16.5px; max-width:52ch}
+.searchbar{
+  display:flex; align-items:center; gap:10px; margin-top:20px; background:var(--canvas);
+  border:1px solid var(--border); border-radius:10px; padding:6px 6px 6px 14px; box-shadow:var(--shadow);
+}
+.searchbar{flex-wrap:wrap}
+.searchbar input{flex:1 1 140px; min-width:0; border:0; outline:0; background:none; min-height:38px; font-size:15px}
+.stats{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px}
+.stat{background:var(--canvas); border:1px solid var(--border); border-radius:999px; padding:6px 14px; font-size:13.5px; color:var(--muted)}
+.stat b{color:var(--text)}
+.hero-art{position:relative; height:220px}
+.hero-art .tile{
+  position:absolute; border-radius:14px; border:1px solid var(--border); overflow:hidden; line-height:0;
+  background:var(--canvas); box-shadow:var(--shadow); aspect-ratio:4/3;
+}
+.hero-art .t1{width:56%; left:0; top:8px; transform:rotate(-3deg)}
+.hero-art .t2{width:52%; right:2%; top:0; transform:rotate(4deg)}
+.hero-art .t3{width:46%; left:24%; bottom:0; transform:rotate(-1deg)}
+.hero-art .swap{
+  position:absolute; left:50%; top:52%; transform:translate(-50%,-50%);
+  width:52px; height:52px; border-radius:50%; background:var(--blue); color:#fff;
+  display:grid; place-items:center; box-shadow:0 6px 18px rgba(39,131,222,.35); z-index:2;
+}
 
-  section{padding:48px 0; border-bottom:1px solid var(--border)}
-  section:last-of-type{border-bottom:0}
-  .num{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:28px; height:28px; border-radius:8px; background:var(--blue);
-    color:#fff; font-size:14px; font-weight:600; margin-right:12px; flex:0 0 auto;
-  }
-  h2{display:flex; align-items:flex-start; font-size:26px; line-height:1.2; margin:0 0 8px; letter-spacing:-.01em}
-  h2 .num{margin-top:2px}
-  .section-note{color:var(--muted); margin:0 0 28px; max-width:720px}
-  h3{font-size:16px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 12px}
+/* ---------- LAYOUT ---------- */
+main{padding:28px 0 64px}
+.section-head{display:flex; align-items:flex-end; gap:16px; margin:0 0 16px}
+.section-head h2{margin:0; font-size:22px; letter-spacing:-.01em}
+.section-head p{margin:2px 0 0; color:var(--muted); font-size:14.5px}
+.section-head .spacer{flex:1}
+h3.k{font-size:12.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin:0 0 10px}
 
-  ul.clean{list-style:none; margin:0; padding:0}
-  ul.clean li{position:relative; padding:6px 0 6px 22px}
-  ul.clean li::before{
-    content:""; position:absolute; left:4px; top:15px; width:6px; height:6px;
-    border-radius:50%; background:var(--blue);
-  }
-  ul.clean.g li::before{background:var(--green)}
-  ul.clean.o li::before{background:var(--orange)}
-  ul.clean.r li::before{background:var(--red)}
+.chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:20px}
+.chip{
+  border:1px solid var(--border); background:var(--canvas); border-radius:999px;
+  padding:8px 14px; font-size:13.5px; color:var(--muted); white-space:nowrap; min-height:38px;
+}
+.chip:hover{background:var(--soft); color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--text); border-color:var(--text); color:#fff; font-weight:500}
 
-  .grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:24px}
-  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
-  .card{
-    background:var(--canvas); border:1px solid var(--border); border-radius:12px; padding:24px;
-  }
-  .card.soft{background:var(--soft)}
-  .card-title{font-weight:600; font-size:17px; margin:0 0 12px; display:flex; align-items:center; gap:8px}
-  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-  .dot.b{background:var(--blue)} .dot.g{background:var(--green)}
-  .dot.o{background:var(--orange)} .dot.r{background:var(--red)}
+.toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:20px}
+.field{display:flex; flex-direction:column; gap:6px}
+.field label{font-size:12.5px; color:var(--muted); font-weight:500}
+.field select,.field input,.field textarea{
+  border:1px solid var(--border); border-radius:8px; background:var(--canvas);
+  padding:10px 12px; min-height:44px; outline:0;
+}
+.field select:focus,.field input:focus,.field textarea:focus{border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-soft)}
+.field textarea{min-height:92px; resize:vertical}
+.hint{font-size:12.5px; color:var(--muted)}
 
-  .value-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
-  .value{background:var(--blue-soft); border-radius:12px; padding:20px}
-  .value:nth-child(2){background:var(--green-soft)}
-  .value:nth-child(3){background:var(--orange-soft)}
-  .value:nth-child(4){background:var(--surface2)}
-  .value strong{display:block; margin-bottom:4px}
-  .value span{font-size:15px; color:#55524e}
+.grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+.grid.two{grid-template-columns:repeat(2,1fr)}
 
-  /* FLOW */
-  .flow{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
-  .step{
-    background:var(--soft); border:1px solid var(--border); border-radius:8px;
-    padding:14px 16px; font-size:15px; font-weight:500; display:flex; align-items:center; gap:12px;
-  }
-  .step i{
-    font-style:normal; color:var(--blue); font-weight:700; font-size:12px;
-    background:var(--blue-soft); border-radius:6px; padding:4px 7px; flex:0 0 auto;
-  }
+/* ---------- CARD ---------- */
+.card{
+  background:var(--canvas); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden; display:flex; flex-direction:column; transition:.18s;
+}
+.card.pad{padding:20px}
+.card.hoverable:hover{box-shadow:var(--shadow); transform:translateY(-2px); border-color:#dcdbd8}
+.thumb{position:relative; aspect-ratio:4/3; background:var(--surface2); overflow:hidden; line-height:0}
+.thumb svg,.thumb img{width:100%; height:100%; object-fit:cover}
+.thumb .tags{position:absolute; left:10px; top:10px; display:flex; gap:6px; flex-wrap:wrap}
+.thumb .fav{
+  position:absolute; right:10px; top:10px; width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--border); background:rgba(255,255,255,.92); display:grid; place-items:center;
+}
+.tag{
+  font-size:11.5px; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
+  background:rgba(255,255,255,.94); border:1px solid var(--border); color:var(--muted);
+  border-radius:6px; padding:4px 8px;
+}
+.tag.b{background:var(--blue-soft); border-color:#cfe6f9; color:#1d5f9f}
+.tag.g{background:var(--green-soft); border-color:#c9e2d3; color:#2f7550}
+.tag.o{background:var(--orange-soft); border-color:#f2ddc7; color:#9c5a24}
+.tag.p{background:var(--purple-soft); border-color:#e2d4f6; color:#6b45a0}
+.card .body{padding:16px 18px 18px; display:flex; flex-direction:column; gap:10px; flex:1}
+.card h4{margin:0; font-size:16.5px; line-height:1.3}
+.meta{display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--muted); flex-wrap:wrap}
+.value{font-size:18px; font-weight:600; letter-spacing:-.01em}
+.wants{font-size:13.5px; color:var(--muted); background:var(--soft); border-radius:8px; padding:8px 10px}
+.wants b{color:var(--text); font-weight:600}
+.card .foot{display:flex; gap:8px; margin-top:auto}
+.card .foot .btn{flex:1}
+.match{display:flex; align-items:center; gap:8px; font-size:13px; color:#2f7550; background:var(--green-soft); border-radius:8px; padding:8px 10px}
 
-  /* TABLE */
-  .table-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:12px}
-  table{border-collapse:collapse; width:100%; min-width:720px; font-size:15px}
-  th,td{text-align:left; padding:14px 16px; border-bottom:1px solid var(--border); vertical-align:top}
-  thead th{background:var(--surface2); font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
-  tbody tr:last-child td{border-bottom:0}
-  tbody tr:nth-child(even){background:var(--soft)}
-  code{font-family:Menlo,Consolas,monospace; font-size:13.5px; color:#3f6f9c}
-  td.ent code{color:var(--blue); font-weight:600}
+.pill{text-transform:capitalize; border-radius:999px; padding:5px 12px; font-size:13px; font-weight:500; background:var(--surface2); display:inline-block}
+.pill.b{background:var(--blue-soft); color:#1d5f9f}
+.pill.g{background:var(--green-soft); color:#2f7550}
+.pill.o{background:var(--orange-soft); color:#9c5a24}
+.pill.r{background:var(--red-soft); color:#a8423a}
+.pill.p{background:var(--purple-soft); color:#6b45a0}
 
-  /* STATUS PIPELINE */
-  .pipe{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px}
-  .pill{
-    border-radius:999px; padding:6px 14px; font-size:14px; font-weight:500;
-    background:var(--surface2); color:var(--text);
-  }
-  .pill.b{background:var(--blue-soft); color:#1d5f9f}
-  .pill.g{background:var(--green-soft); color:#2f7550}
-  .pill.o{background:var(--orange-soft); color:#9c5a24}
-  .pill.r{background:var(--red-soft); color:#a8423a}
-  .pipe-sep{color:var(--muted); font-size:14px}
+.empty{
+  border:1px dashed var(--border); border-radius:var(--radius); padding:40px 24px;
+  text-align:center; color:var(--muted); background:var(--soft);
+}
+.empty b{display:block; color:var(--text); margin-bottom:4px; font-size:16px}
 
-  /* PHASES */
-  .phases{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
-  .phase{border:1px solid var(--border); border-radius:12px; padding:20px; background:var(--canvas)}
-  .phase .tag{
-    font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-    color:var(--blue); margin-bottom:8px; display:block;
-  }
-  .phase:nth-child(2) .tag{color:var(--green)}
-  .phase:nth-child(3) .tag{color:var(--orange)}
-  .phase:nth-child(4) .tag{color:#8a5cc4}
-  .phase h4{margin:0 0 12px; font-size:16px}
-  .phase ul{margin:0; padding-left:18px; font-size:14.5px; color:#55524e}
-  .phase li{margin-bottom:6px}
+/* ---------- MODAL ---------- */
+.scrim{
+  position:fixed; inset:0; background:rgba(28,28,27,.45); z-index:60;
+  display:flex; align-items:flex-start; justify-content:center; padding:32px 16px; overflow-y:auto;
+}
+.scrim[hidden]{display:none}
+.sheet{
+  background:var(--canvas); border-radius:16px; width:100%; max-width:900px;
+  box-shadow:0 24px 60px rgba(0,0,0,.22); overflow:hidden;
+}
+.sheet .head{
+  display:flex; align-items:center; gap:12px; padding:16px 20px;
+  border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--canvas); z-index:2;
+}
+.sheet .head h3{margin:0; font-size:17px; flex:1}
+.sheet .content{padding:24px}
+.iconbtn{
+  width:40px; height:40px; border-radius:8px; border:1px solid var(--border);
+  background:var(--canvas); display:grid; place-items:center;
+}
+.iconbtn:hover{background:var(--soft)}
+.detail{display:grid; grid-template-columns:1.05fr .95fr; gap:28px}
+.detail .gal{border:1px solid var(--border); border-radius:12px; overflow:hidden; aspect-ratio:4/3; background:var(--surface2)}
+.detail .gal svg,.detail .gal img{width:100%;height:100%;object-fit:cover}
+.kv{display:grid; grid-template-columns:auto 1fr; gap:8px 16px; font-size:14.5px; margin:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.owner{display:flex; align-items:center; gap:12px; border:1px solid var(--border); border-radius:12px; padding:14px; background:var(--soft)}
+.owner .n{flex:1; font-size:14.5px}
+.owner .n span{display:block; color:var(--muted); font-size:13px}
+.pickrow{
+  display:flex; align-items:center; gap:12px; border:1px solid var(--border);
+  border-radius:10px; padding:10px 12px; cursor:pointer; background:var(--canvas);
+}
+.pickrow:hover{background:var(--soft)}
+.pickrow input{width:20px; height:20px; accent-color:var(--blue)}
+.pickrow .t{flex:1; font-size:14.5px}
+.pickrow .t span{display:block; color:var(--muted); font-size:13px}
+.calc{background:var(--soft); border:1px solid var(--border); border-radius:12px; padding:16px; display:grid; gap:8px; font-size:14.5px}
+.calc .line{display:flex; justify-content:space-between; gap:12px}
+.calc .line.total{border-top:1px solid var(--border); padding-top:8px; font-weight:600}
 
-  .checklist li{position:relative; padding:8px 0 8px 30px; list-style:none}
-  .checklist{margin:0;padding:0}
-  .checklist li::before{
-    content:"\2713"; position:absolute; left:0; top:8px; width:20px; height:20px;
-    border-radius:6px; background:var(--green-soft); color:var(--green);
-    font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center;
-  }
+/* ---------- CHAT ---------- */
+.thread{display:grid; grid-template-columns:1fr; gap:12px; max-height:320px; overflow-y:auto; padding:4px 2px}
+.msg{max-width:78%; padding:10px 14px; border-radius:14px; font-size:14.5px; background:var(--surface2)}
+.msg .who{display:block; font-size:11.5px; color:var(--muted); margin-bottom:2px}
+.msg.mine{margin-left:auto; background:var(--blue-soft); color:#17548c}
+.msg.sys{margin:0 auto; background:var(--soft); border:1px dashed var(--border); color:var(--muted); font-size:13px; text-align:center}
+.composer{display:flex; gap:8px; margin-top:12px}
+.composer input{flex:1; border:1px solid var(--border); border-radius:8px; padding:0 12px; min-height:44px; outline:0}
+.composer input:focus{border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-soft)}
+.steps{display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:12.5px; color:var(--muted)}
+.steps .s{padding:5px 10px; border-radius:999px; background:var(--surface2)}
+.steps .s.on{background:var(--blue); color:#fff; font-weight:600}
+.steps .s.done{background:var(--green-soft); color:#2f7550}
 
-  .callout{
-    border:1px solid var(--border); border-left:3px solid var(--orange);
-    background:var(--orange-soft); border-radius:8px; padding:16px 20px; font-size:15px;
-  }
-  .cats{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px}
-  .cat{background:var(--surface2); border-radius:8px; padding:8px 12px; font-size:14px}
+/* ---------- PHOTOS PICKER ---------- */
+.photos{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+.photo{
+  aspect-ratio:1; border:1px dashed var(--border); border-radius:10px; background:var(--soft);
+  display:grid; place-items:center; position:relative; overflow:hidden; color:var(--muted); font-size:13px; text-align:center;
+}
+.photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.photo .x{position:absolute; right:6px; top:6px; width:28px; height:28px; border-radius:50%; border:1px solid var(--border); background:rgba(255,255,255,.94)}
 
-  footer{padding:32px 0 48px; color:var(--muted); font-size:14px;
-    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; border-top:1px solid var(--border)}
+/* ---------- TOAST ---------- */
+.toasts{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:80; display:grid; gap:8px; width:min(92vw,420px)}
+.toast{
+  background:var(--text); color:#fff; border-radius:10px; padding:12px 16px; font-size:14px;
+  box-shadow:0 10px 28px rgba(0,0,0,.2); display:flex; gap:10px; align-items:center;
+}
+.toast.ok{background:#2f7550}
+.toast.warn{background:#9c5a24}
 
-  @media (max-width:820px){
-    .wrap{padding:0 20px}
-    h1{font-size:32px}
-    .sub{font-size:18px}
-    .grid2,.grid3,.value-grid,.phases,.flow{grid-template-columns:1fr}
-    section{padding:36px 0}
-  }
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+footer{border-top:1px solid var(--border); padding:24px 0 40px; color:var(--muted); font-size:13.5px}
+footer .row{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero .inner{grid-template-columns:1fr}
+  .hero-art{display:none}
+  .detail{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body{overflow-x:hidden}
+  .wrap{padding:0 20px}
+  h1{font-size:26px}
+  .hero{padding:24px 0 22px}
+  .appbar .row > .btn.primary{display:none}
+  .searchbar{padding:10px}
+  .searchbar .btn{width:100%}
+  .toolbar .field{flex:1 1 44%}
+  .sheet{border-radius:12px}
+  .scrim{padding:12px 8px}
+  .grid,.grid.two{grid-template-columns:1fr}
+  .appbar .row{height:auto; padding:10px 0; flex-wrap:wrap}
+  .me .who{display:none}
+  .tabs{order:3; width:100%; margin-left:0}
+  .sheet .content{padding:18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important} html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <span class="eyebrow">Dokumen Rancangan MVP</span>
-    <h1>Rancangan BIVAK</h1>
-    <p class="sub">Marketplace Barter Gear Outdoor — <em>Barter Item &amp; Value Antar Komunitas</em></p>
-    <p class="lede">BIVAK adalah marketplace barter gear outdoor. Pengguna menawarkan barang, menambahkan nilai taksasi, menyatakan barang incaran, lalu mengajukan barter langsung atau barter dengan selisih nilai.</p>
-    <div class="hero-meta">
-      <span class="chip">Ekosistem Pintu Angin</span>
-      <span class="chip">Komunitas Reichas Chelebes</span>
-      <span class="chip">Makassar · Gowa · Sulawesi Selatan</span>
-      <span class="chip">Supabase Free Plan</span>
+<header class="appbar">
+  <div class="wrap row">
+    <a class="brand" href="#" onclick="go('beranda');return false">
+      <span class="mark"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 L21 20 H3 Z" fill="#E5F2FC"/><path d="M12 4 L16.5 12 H7.5 Z" fill="#fff"/></svg></span>
+      <span><b>BIVAK</b><small>Barter gear outdoor</small></span>
+    </a>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+    <span class="spacer"></span>
+    <button class="btn primary" onclick="go('tambah')">+ Tambah barang</button>
+    <div class="me">
+      <span class="avatar" id="meAvatar">NI</span>
+      <span class="who"><b id="meName">—</b><span id="meCity">—</span></span>
     </div>
   </div>
 </header>
 
-<nav class="toc" aria-label="Daftar isi">
-  <div class="wrap">
-    <ol>
-      <li><a href="#tujuan">1. Tujuan</a></li>
-      <li><a href="#lingkup">2. Lingkup</a></li>
-      <li><a href="#alur">3. Alur</a></li>
-      <li><a href="#data">4. Model Data</a></li>
-      <li><a href="#status">5. Status</a></li>
-      <li><a href="#tampilan">6. Tampilan</a></li>
-      <li><a href="#keamanan">7. Keamanan</a></li>
-      <li><a href="#optimasi">8. Optimasi</a></li>
-      <li><a href="#tahapan">9. Tahapan</a></li>
-      <li><a href="#rilis">10. Rilis</a></li>
-    </ol>
-  </div>
-</nav>
-
-<main>
-
-<section id="tujuan">
-  <div class="wrap">
-    <h2><span class="num">1</span>Tujuan MVP</h2>
-    <p class="section-note">Membangun marketplace barter khusus gear outdoor yang terhubung ke Pintu Angin, dimulai dari komunitas Reichas Chelebes dan wilayah Makassar–Gowa–Sulawesi Selatan.</p>
-    <h3>Nilai utama</h3>
-    <div class="value-grid">
-      <div class="value"><strong>Tukar, bukan hanya jual</strong><span>Pengguna dapat menukar gear sesuai kebutuhan nyata di lapangan.</span></div>
-      <div class="value"><strong>Nilai taksasi</strong><span>Negosiasi menjadi lebih jelas, terukur, dan adil bagi kedua pihak.</span></div>
-      <div class="value"><strong>Wishlist &amp; pencocokan</strong><span>Membantu pengguna menemukan pasangan barter yang tepat.</span></div>
-      <div class="value"><strong>Reputasi komunitas</strong><span>Menekan risiko barang tidak sesuai deskripsi.</span></div>
-    </div>
-  </div>
-</section>
-
-<section id="lingkup">
-  <div class="wrap">
-    <h2><span class="num">2</span>Ruang Lingkup Rilis Pertama</h2>
-    <p class="section-note">Batas jelas antara yang dibangun sekarang dan yang ditunda agar MVP tetap ringan.</p>
-    <div class="grid3">
-      <div class="card">
-        <p class="card-title"><span class="dot b"></span>Fitur untuk pengguna</p>
-        <ul class="clean">
-          <li>Login Google memakai akun Pintu Angin yang sudah ada.</li>
-          <li>Profil barter: nama tampil, kota/area transaksi, foto profil, reputasi.</li>
-          <li>Tambah barang: judul, kategori, kondisi, foto, deskripsi, nilai taksasi, lokasi.</li>
-          <li>Tentukan barang incaran atau wishlist pada setiap listing.</li>
-          <li>Jelajah, pencarian, filter kategori, kondisi, lokasi, dan rentang nilai.</li>
-          <li>Ajukan barter dengan satu atau beberapa barang milik pengguna.</li>
-          <li>Selisih nilai tunai sebagai usulan negosiasi, bukan pembayaran dalam aplikasi.</li>
-          <li>Chat penawaran dan pembaruan status transaksi.</li>
-          <li>Favorit, laporkan listing, blokir pengguna, dan hapus listing pribadi.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <p class="card-title"><span class="dot g"></span>Fitur petugas/admin</p>
-        <ul class="clean g">
-          <li>Moderasi listing, foto, dan laporan pengguna.</li>
-          <li>Tanda akun tepercaya atau verifikasi komunitas.</li>
-          <li>Daftar transaksi bermasalah dan alasan laporan.</li>
-          <li>Statistik dasar: listing aktif, barter selesai, pengguna aktif, kategori populer.</li>
-        </ul>
-      </div>
-      <div class="card soft">
-        <p class="card-title"><span class="dot r"></span>Di luar MVP</p>
-        <ul class="clean r">
-          <li>Rekening bersama/escrow dan pembayaran dalam aplikasi.</li>
-          <li>Jasa kurir/logistik terintegrasi.</li>
-          <li>Penilaian taksasi otomatis berbasis AI.</li>
-          <li>Komisi transaksi atau iklan berbayar.</li>
-          <li>Pengiriman antar-kota yang dikelola platform.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="alur">
-  <div class="wrap">
-    <h2><span class="num">3</span>Alur Pengguna</h2>
-    <p class="section-note">Sembilan langkah dari masuk aplikasi sampai barter dinyatakan selesai.</p>
-    <div class="flow">
-      <span class="step"><i>01</i>Login Pintu Angin</span>
-      <span class="step"><i>02</i>Isi profil BIVAK</span>
-      <span class="step"><i>03</i>Unggah barang + nilai taksasi</span>
-      <span class="step"><i>04</i>Isi barang incaran</span>
-      <span class="step"><i>05</i>Jelajah &amp; pencocokan barter</span>
-      <span class="step"><i>06</i>Ajukan penawaran</span>
-      <span class="step"><i>07</i>Chat &amp; negosiasi</span>
-      <span class="step"><i>08</i>Atur temu/kirim mandiri</span>
-      <span class="step"><i>09</i>Konfirmasi selesai</span>
-    </div>
-    <p class="callout" style="margin-top:24px">Jika belum sepakat: penawaran dapat diubah, ditolak, atau dibatalkan tanpa mengubah listing asal.</p>
-  </div>
-</section>
-
-<section id="data">
-  <div class="wrap">
-    <h2><span class="num">4</span>Model Data Supabase</h2>
-    <p class="section-note">Sembilan tabel inti yang menopang listing, penawaran, chat, transaksi, dan moderasi.</p>
-    <div class="table-scroll">
-      <table>
-        <thead><tr><th style="width:24%">Entitas</th><th style="width:26%">Fungsi</th><th>Kolom inti</th></tr></thead>
-        <tbody>
-          <tr><td class="ent"><code>barter_profiles</code></td><td>Profil pengguna BIVAK</td><td><code>user_id, display_name, city, avatar_url, reputation_score, verified</code></td></tr>
-          <tr><td class="ent"><code>barter_listings</code></td><td>Barang yang ditawarkan</td><td><code>id, owner_id, title, category, condition, description, appraised_value, city, status</code></td></tr>
-          <tr><td class="ent"><code>barter_listing_photos</code></td><td>Foto setiap barang</td><td><code>id, listing_id, storage_path, sort_order</code></td></tr>
-          <tr><td class="ent"><code>barter_wants</code></td><td>Barang incaran pemilik listing</td><td><code>id, listing_id, category, keyword, minimum_value, maximum_value</code></td></tr>
-          <tr><td class="ent"><code>barter_offers</code></td><td>Penawaran barter</td><td><code>id, target_listing_id, proposer_id, cash_adjustment, note, status</code></td></tr>
-          <tr><td class="ent"><code>barter_offer_items</code></td><td>Barang dalam penawaran</td><td><code>offer_id, listing_id, appraised_value_snapshot</code></td></tr>
-          <tr><td class="ent"><code>barter_messages</code></td><td>Chat khusus penawaran</td><td><code>id, offer_id, sender_id, body, created_at</code></td></tr>
-          <tr><td class="ent"><code>barter_transactions</code></td><td>Catatan barter disepakati</td><td><code>id, offer_id, status, agreed_at, completed_at</code></td></tr>
-          <tr><td class="ent"><code>barter_reports</code></td><td>Laporan listing/pengguna</td><td><code>id, reporter_id, target_type, target_id, reason, status</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="status">
-  <div class="wrap">
-    <h2><span class="num">5</span>Status Listing dan Transaksi</h2>
-    <p class="section-note">Alur status yang dipakai untuk menjaga satu listing tidak berbenturan di dua transaksi.</p>
-    <div class="grid2">
-      <div class="card">
-        <p class="card-title"><span class="dot b"></span>Status listing</p>
-        <div class="pipe">
-          <span class="pill">Draf</span><span class="pipe-sep">→</span>
-          <span class="pill b">Aktif</span><span class="pipe-sep">→</span>
-          <span class="pill o">Dicadangkan</span><span class="pipe-sep">→</span>
-          <span class="pill g">Selesai</span><span class="pipe-sep">/</span>
-          <span class="pill">Diarsipkan</span>
-        </div>
-      </div>
-      <div class="card">
-        <p class="card-title"><span class="dot o"></span>Status penawaran barter</p>
-        <div class="pipe">
-          <span class="pill b">Diajukan</span><span class="pipe-sep">→</span>
-          <span class="pill o">Negosiasi</span><span class="pipe-sep">→</span>
-          <span class="pill b">Disetujui</span><span class="pipe-sep">→</span>
-          <span class="pill">Pertemuan/Pengiriman</span><span class="pipe-sep">→</span>
-          <span class="pill g">Selesai</span>
-        </div>
-        <div class="pipe" style="margin-top:12px">
-          <span class="pill">Diajukan / Negosiasi</span><span class="pipe-sep">→</span>
-          <span class="pill r">Ditolak</span><span class="pipe-sep">atau</span>
-          <span class="pill r">Dibatalkan</span>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:24px">
-      <h3>Aturan penting</h3>
-      <div class="grid2">
-        <ul class="clean">
-          <li>Satu listing tidak dapat masuk ke transaksi selesai lebih dari satu kali.</li>
-          <li>Pemilik listing dapat menerima satu penawaran dan otomatis mencadangkan barang.</li>
-        </ul>
-        <ul class="clean">
-          <li>Penawaran lain diberi status tidak terpilih setelah transaksi selesai.</li>
-          <li>Nilai taksasi adalah referensi; keputusan akhir disepakati kedua pihak.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="tampilan">
-  <div class="wrap">
-    <h2><span class="num">6</span>Tampilan dan Navigasi</h2>
-    <p class="section-note">Lima layar utama yang menjadi tulang punggung pengalaman BIVAK.</p>
-    <div class="grid3">
-      <div class="card soft"><p class="card-title">Beranda BIVAK</p><p style="margin:0;color:#55524e;font-size:15px">Pencarian, kategori, listing terbaru, dan bagian “Cocok untukmu”.</p></div>
-      <div class="card soft"><p class="card-title">Detail barang</p><p style="margin:0;color:#55524e;font-size:15px">Foto, kondisi, nilai taksasi, barang incaran, profil pemilik, tombol Ajukan Barter.</p></div>
-      <div class="card soft"><p class="card-title">Tambah barang</p><p style="margin:0;color:#55524e;font-size:15px">Formulir listing dan upload maksimal tiga foto terkompresi.</p></div>
-      <div class="card soft"><p class="card-title">Penawaran</p><p style="margin:0;color:#55524e;font-size:15px">Masuk, terkirim, negosiasi, disetujui, dan selesai.</p></div>
-      <div class="card soft"><p class="card-title">Profil BIVAK</p><p style="margin:0;color:#55524e;font-size:15px">Barang saya, wishlist, reputasi, dan riwayat barter.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="keamanan">
-  <div class="wrap">
-    <h2><span class="num">7</span>Keamanan dan Moderasi</h2>
-    <p class="section-note">Row Level Security menjadi lapisan utama; moderasi manusia melengkapi.</p>
-    <div class="grid2">
-      <ul class="clean">
-        <li>Seluruh tabel menggunakan Row Level Security (RLS).</li>
-        <li>Hanya pemilik yang dapat mengubah atau mengarsipkan listing sendiri.</li>
-        <li>Hanya pihak penawaran yang dapat membaca chat penawaran.</li>
-        <li>Foto divalidasi ukuran, jenis file, dan jumlah maksimum sebelum diunggah.</li>
-      </ul>
-      <ul class="clean">
-        <li>Listing dibatasi untuk mencegah spam, contoh maksimal lima listing baru per hari per akun.</li>
-        <li>Tombol Laporkan tersedia pada listing, penawaran, dan profil.</li>
-        <li>Transaksi, pembayaran, dan pengiriman dilakukan atas kesepakatan pengguna.</li>
-      </ul>
-    </div>
-    <p class="callout" style="margin-top:24px"><strong>Catatan penting:</strong> BIVAK bukan escrow pada MVP. Aplikasi tidak memproses pembayaran maupun menjamin pengiriman.</p>
-  </div>
-</section>
-
-<section id="optimasi">
-  <div class="wrap">
-    <h2><span class="num">8</span>Optimasi Paket Supabase Free</h2>
-    <p class="section-note">Batasan teknis yang dipilih agar biaya tetap nol pada rilis terbatas.</p>
-    <div class="grid2">
-      <div class="card">
-        <p class="card-title"><span class="dot g"></span>Media &amp; storage</p>
-        <ul class="clean g">
-          <li>Maksimal tiga foto per listing.</li>
-          <li>Foto dikompres di perangkat ke WebP, target 200–400 KB per foto.</li>
-          <li>Bucket privat dengan URL bertanda tangan saat diperlukan.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <p class="card-title"><span class="dot b"></span>Query &amp; realtime</p>
-        <ul class="clean">
-          <li>Listing memakai pagination 20 item per halaman.</li>
-          <li>Chat memuat 30–50 pesan terakhir, kemudian hanya pesan baru.</li>
-          <li>Realtime hanya aktif saat layar penawaran/chat terbuka.</li>
-          <li>Indeks untuk status listing, kategori, kota, <code>owner_id</code>, dan <code>created_at</code>.</li>
-          <li>Pantau database, storage, dan egress mingguan.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="tahapan">
-  <div class="wrap">
-    <h2><span class="num">9</span>Tahapan Pembangunan</h2>
-    <p class="section-note">Empat tahap berurutan, dari fondasi keamanan sampai peluncuran komunitas.</p>
-    <div class="phases">
-      <div class="phase">
-        <span class="tag">Tahap 1</span>
-        <h4>Fondasi data dan keamanan</h4>
-        <ul>
-          <li>Migration SQL seluruh tabel, indeks, bucket, dan RLS.</li>
-          <li>Endpoint aman untuk upload foto, listing, dan penawaran.</li>
-          <li>Moderasi dasar dan pembatasan spam.</li>
-        </ul>
-      </div>
-      <div class="phase">
-        <span class="tag">Tahap 2</span>
-        <h4>Marketplace inti</h4>
-        <ul>
-          <li>Beranda BIVAK dari dummy yang disetujui.</li>
-          <li>Tambah/edit/arsip listing.</li>
-          <li>Detail barang, pencarian, filter, dan favorit.</li>
-          <li>Wishlist/barang incaran.</li>
-        </ul>
-      </div>
-      <div class="phase">
-        <span class="tag">Tahap 3</span>
-        <h4>Barter dan negosiasi</h4>
-        <ul>
-          <li>Pencocokan listing berdasarkan kategori, kata kunci, nilai, lokasi.</li>
-          <li>Pengajuan barter serta selisih nilai.</li>
-          <li>Status penawaran dan chat privat.</li>
-          <li>Konfirmasi barter selesai dan penilaian dua arah.</li>
-        </ul>
-      </div>
-      <div class="phase">
-        <span class="tag">Tahap 4</span>
-        <h4>Admin dan peluncuran</h4>
-        <ul>
-          <li>Panel moderasi BIVAK di Panel Admin.</li>
-          <li>Uji RLS: pemilik, penawar, pengguna biasa, admin.</li>
-          <li>Uji upload foto dari HP, koneksi lambat, perangkat berbeda.</li>
-          <li>Rilis terbatas untuk komunitas Reichas Chelebes.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="rilis">
-  <div class="wrap">
-    <h2><span class="num">10</span>Kriteria Siap Rilis Terbatas</h2>
-    <p class="section-note">Semua butir harus terpenuhi sebelum BIVAK dibuka ke komunitas.</p>
-    <div class="grid2">
-      <ul class="checklist">
-        <li>Pengguna dapat membuat listing dengan foto, nilai taksasi, dan barang incaran.</li>
-        <li>Pengguna lain dapat mengajukan barter dan melihat selisih nilai.</li>
-        <li>Kedua pihak dapat bernegosiasi dalam chat privat.</li>
-        <li>Pengguna dapat menyelesaikan atau membatalkan transaksi.</li>
-      </ul>
-      <ul class="checklist">
-        <li>Admin dapat meninjau laporan dan mengarsipkan listing bermasalah.</li>
-        <li>Tidak ada akses silang ke listing pribadi, chat privat, atau data penawaran pengguna lain.</li>
-        <li>Storage foto, pagination, dan chat berada dalam batas Supabase Free.</li>
-      </ul>
-    </div>
-
-    <div style="margin-top:32px">
-      <h3>Keputusan produk MVP</h3>
-      <div class="grid2">
-        <div class="card soft">
-          <p class="card-title">Kategori awal</p>
-          <div class="cats">
-            <span class="cat">Carrier</span><span class="cat">Tas daypack</span><span class="cat">Sepatu gunung</span>
-            <span class="cat">Sleeping bag</span><span class="cat">Tenda</span><span class="cat">Matras</span>
-            <span class="cat">Trekking pole</span><span class="cat">Headlamp</span><span class="cat">Jas hujan</span>
-            <span class="cat">Perlengkapan memasak</span>
-          </div>
-        </div>
-        <div class="card soft">
-          <p class="card-title">Ketentuan lain</p>
-          <ul class="clean">
-            <li>Nilai mata uang memakai Rupiah sebagai taksasi, bukan saldo/dompet digital.</li>
-            <li>Selisih nilai adalah kesepakatan di luar aplikasi.</li>
-            <li>Wilayah awal: Makassar, Gowa, Maros, Takalar, dan komunitas pendaki Sulawesi Selatan.</li>
-            <li>Nama publik: <strong>BIVAK — Barter Item &amp; Value Antar Komunitas</strong>.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
+<div id="view"></div>
 
 <footer>
-  <div class="wrap" style="display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; width:100%">
-    <span>BIVAK — Barter Item &amp; Value Antar Komunitas</span>
-    <span>Dokumen rancangan MVP · Ekosistem Pintu Angin</span>
+  <div class="wrap row">
+    <span><b>BIVAK</b> — Barter Item &amp; Value Antar Komunitas · Prototipe MVP</span>
+    <span>Ekosistem Pintu Angin · Reichas Chelebes · Makassar–Gowa</span>
   </div>
 </footer>
 
+<div class="scrim" id="scrim" hidden onclick="if(event.target===this)closeSheet()">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="head">
+      <h3 id="sheetTitle">Detail</h3>
+      <button class="iconbtn" onclick="closeSheet()" aria-label="Tutup">✕</button>
+    </div>
+    <div class="content" id="sheetBody"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+/* =========================================================
+   BIVAK — prototipe marketplace barter gear outdoor
+   Data disimpan di localStorage (tanpa backend).
+   Skema mengikuti dokumen rancangan MVP:
+   barter_profiles / barter_listings / barter_wants /
+   barter_offers / barter_offer_items / barter_messages /
+   barter_transactions / barter_reports
+   ========================================================= */
+
+const CATS = ["Carrier","Tas daypack","Sepatu gunung","Sleeping bag","Tenda","Matras","Trekking pole","Headlamp","Jas hujan","Perlengkapan memasak"];
+const CITIES = ["Makassar","Gowa","Maros","Takalar","Sinjai"];
+const CONDS = ["Baru","Seperti baru","Bekas terawat","Bekas layak pakai"];
+const ME = "u1";
+const KEY = "bivak.v1";
+
+const rp = n => "Rp" + (n||0).toLocaleString("id-ID");
+const esc = s => String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = p => p + Math.random().toString(36).slice(2,8);
+const ago = t => {
+  const d = (Date.now()-t)/6e4;
+  if(d<1) return "baru saja"; if(d<60) return Math.floor(d)+" mnt lalu";
+  if(d<1440) return Math.floor(d/60)+" jam lalu"; return Math.floor(d/1440)+" hari lalu";
+};
+const initials = n => n.split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase();
+
+/* ---------- ilustrasi vektor per kategori ---------- */
+const ART = {
+  "Carrier":["#E5F2FC","#2783DE","M34 28h32c4 0 6 3 6 7v34c0 5-3 8-8 8H36c-5 0-8-3-8-8V35c0-4 2-7 6-7z M42 28c0-7 4-10 8-10s8 3 8 10 M34 46h32 M44 62h12v10H44z"],
+  "Tas daypack":["#F1EAFB","#8A5CC4","M36 32h28c5 0 7 4 7 9v29c0 5-3 8-8 8H37c-5 0-8-3-8-8V41c0-5 2-9 7-9z M43 32c0-8 3-12 7-12s7 4 7 12 M38 56h24v14H38z"],
+  "Sepatu gunung":["#FBEBDE","#D5803B","M18 62c0-8 6-10 8-16l4-14h14l3 14c8 3 22 6 30 10 4 2 5 5 5 8v6H18z M26 46h16 M30 34l-2-8"],
+  "Sleeping bag":["#E8F1EC","#46A171","M30 34c0-7 5-12 12-12h16c7 0 12 5 12 12v32c0 8-5 12-12 12H42c-7 0-12-5-12-12z M30 50h40 M50 22v56"],
+  "Tenda":["#E8F1EC","#46A171","M12 76 50 22l38 54z M50 22v54 M36 76l14-26 14 26 M12 76h76"],
+  "Matras":["#F0EFED","#7D7A75","M16 40h68c4 0 6 3 6 8s-2 8-6 8H16c-4 0-6-3-6-8s2-8 6-8z M30 40v16 M44 40v16 M58 40v16 M72 40v16"],
+  "Trekking pole":["#E5F2FC","#2783DE","M36 16h10l-4 60-6 8z M62 16h10l-4 60-6 8z M36 34h10 M62 34h10 M36 54h10 M62 54h10"],
+  "Headlamp":["#FBEBDE","#D5803B","M28 44a22 22 0 0 1 44 0v14a8 8 0 0 1-8 8H36a8 8 0 0 1-8-8z M44 52h12v14H44z M14 52h10 M76 52h10 M22 34l8 6 M78 34l-8 6"],
+  "Jas hujan":["#E5F2FC","#2783DE","M50 20c8 0 10 6 18 10l10 6-6 14-6-3v33H34V47l-6 3-6-14 10-6c8-4 10-10 18-10z M50 20v58"],
+  "Perlengkapan memasak":["#F0EFED","#7D7A75","M24 40h40v22c0 8-5 12-12 12H36c-7 0-12-4-12-12z M64 46h12v10H64z M32 40V28 M44 40V24 M56 40V28"]
+};
+function art(cat, seed=0){
+  const a = ART[cat] || ART["Matras"];
+  const rot = (seed%2 ? 4 : -3);
+  return '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustrasi '+esc(cat)+'">'
+    + '<rect width="100" height="100" fill="'+a[0]+'"/>'
+    + '<circle cx="'+(seed%2?88:12)+'" cy="92" r="50" fill="#FFFFFF" opacity=".6"/>'
+    + '<circle cx="'+(seed%2?76:24)+'" cy="18" r="24" fill="'+a[1]+'" opacity=".09"/>'
+    + '<g transform="translate(50 50) scale(.74) rotate('+rot+') translate(-50 -50)" fill="none" stroke="'+a[1]+'" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".92"><path d="'+a[2]+'"/></g>'
+    + '</svg>';
+}
+function thumbOf(l, cls){
+  if(l.photos && l.photos.length) return '<img src="'+l.photos[0]+'" alt="'+esc(l.title)+'">';
+  return art(l.category, l.id.length);
+}
+
+/* ---------- seed ---------- */
+function seed(){
+  const t = Date.now(), h = 36e5;
+  const profiles = [
+    {id:"u1", name:"Nietche", city:"Gowa", reputation:4.8, deals:6, verified:true},
+    {id:"u2", name:"Rian Hasbi", city:"Makassar", reputation:4.9, deals:11, verified:true},
+    {id:"u3", name:"Tenri Saleha", city:"Maros", reputation:4.6, deals:4, verified:false},
+    {id:"u4", name:"Ardi Lembang", city:"Gowa", reputation:4.7, deals:8, verified:true},
+    {id:"u5", name:"Fitrah Anugrah", city:"Takalar", reputation:4.4, deals:3, verified:false},
+    {id:"u6", name:"Nurul Bawakaraeng", city:"Makassar", reputation:5.0, deals:14, verified:true}
+  ];
+  const L = (id,owner,title,cat,cond,val,city,desc,wants,age)=>({
+    id, ownerId:owner, title, category:cat, condition:cond, appraisedValue:val, city,
+    description:desc, wants, status:"aktif", photos:[], createdAt:t-age*h, favorite:false
+  });
+  const listings = [
+    L("l101","u1","Carrier Consina Alpine 60L","Carrier","Bekas terawat",850000,"Gowa","Dipakai 4 kali pendakian Bawakaraeng. Frame utuh, semua strap fungsi, tidak ada jahitan lepas.",[{category:"Tenda",keyword:"kapasitas 2",min:700000,max:1100000}],30),
+    L("l102","u1","Sepatu Eiger Anduro 42","Sepatu gunung","Bekas layak pakai",420000,"Gowa","Sol masih menggigit, ada gores kecil di bagian toe cap. Ukuran 42.",[{category:"Headlamp",keyword:"rechargeable",min:250000,max:500000}],52),
+    L("l103","u1","Trekking pole aluminium sepasang","Trekking pole","Seperti baru",280000,"Gowa","Pasangan lengkap, lock kuat, karet ujung masih ada cadangan.",[{category:"Matras",keyword:"inflatable",min:200000,max:400000}],14),
+    L("l201","u2","Tenda Naturehike Cloud Up 2","Tenda","Bekas terawat",980000,"Makassar","Double layer, kapasitas 2 orang. Flysheet tanpa kebocoran, frame lengkap, sudah dicoat ulang seam.",[{category:"Carrier",keyword:"60L",min:800000,max:1200000}],8),
+    L("l202","u3","Sleeping bag Rei Ultralight","Sleeping bag","Bekas terawat",320000,"Maros","Comfort 12°C, zipper mulus, sudah dicuci dry clean.",[{category:"Trekking pole",keyword:"sepasang",min:200000,max:400000}],20),
+    L("l203","u4","Headlamp Ledlenser MH5 rechargeable","Headlamp","Seperti baru",480000,"Gowa","400 lumen, baterai original, ada kabel charge dan pouch.",[{category:"Sepatu gunung",keyword:"ukuran 42",min:350000,max:600000}],5),
+    L("l204","u5","Matras inflatable Naturehike","Matras","Bekas terawat",300000,"Takalar","Tanpa bocor, sudah tes rendam. Pompa manual bawaan disertakan.",[{category:"Trekking pole",keyword:"aluminium",min:200000,max:350000}],26),
+    L("l205","u6","Kompor + cookset Fire Maple","Perlengkapan memasak","Bekas terawat",390000,"Makassar","Kompor kuat, cookset 2 nesting, ada wind screen tambahan.",[{category:"Jas hujan",keyword:"raincoat set",min:250000,max:450000}],40),
+    L("l206","u2","Daypack Osprey Talon 22","Tas daypack","Bekas terawat",640000,"Makassar","Nyaman untuk trip harian, hipbelt utuh, rain cover ikut.",[{category:"Sleeping bag",keyword:"ultralight",min:300000,max:600000}],62),
+    L("l207","u4","Jas hujan set Consina","Jas hujan","Bekas layak pakai",240000,"Gowa","Set atas bawah, lapisan coating masih rapat, ada bekas lipat.",[{category:"Perlengkapan memasak",keyword:"cookset",min:200000,max:400000}],70),
+    L("l208","u6","Carrier Deuter Aircontact 55+10","Carrier","Seperti baru",1750000,"Makassar","Dipakai 2 trip. Sistem punggung Aircontact, rain cover original.",[{category:"Tenda",keyword:"ultralight 2P",min:1400000,max:2000000}],3)
+  ];
+  const offers = [{
+    id:"o1", targetListingId:"l101", proposerId:"u2",
+    items:[{listingId:"l201", valueSnapshot:980000}],
+    cashAdjustment:-130000, note:"Tenda saya masih mulus, kalau cocok saya tambah nilai selisihnya.",
+    status:"Diajukan", createdAt:t-2*h,
+    messages:[
+      {id:uid("m"), from:"u2", body:"Halo, tenda Cloud Up 2 saya untuk carrier Alpine 60L. Nilai tenda lebih tinggi Rp130.000, saya minta selisihnya kalau bisa.", at:t-2*h},
+      {id:uid("m"), from:"sys", body:"Penawaran diajukan · nilai taksasi otomatis dibandingkan", at:t-2*h}
+    ]
+  },{
+    id:"o2", targetListingId:"l203", proposerId:"u1",
+    items:[{listingId:"l102", valueSnapshot:420000}],
+    cashAdjustment:60000, note:"Sepatu Anduro 42 sesuai wishlist-mu. Saya siap tambah tunai untuk selisih.",
+    status:"Negosiasi", createdAt:t-20*h,
+    messages:[
+      {id:uid("m"), from:"u1", body:"Sepatu Anduro ukuran 42 masih bagus, cocok dengan barang incaranmu.", at:t-20*h},
+      {id:uid("m"), from:"u4", body:"Menarik. Bisa ketemu di Malino akhir pekan untuk cek fisik?", at:t-18*h},
+      {id:uid("m"), from:"sys", body:"Status penawaran berubah menjadi Negosiasi", at:t-18*h}
+    ]
+  }];
+  return {profiles, listings, offers, transactions:[], reports:[]};
+}
+
+let db = load();
+function load(){
+  try{ const raw = localStorage.getItem(KEY); if(raw) return JSON.parse(raw); }catch(e){}
+  const s = seed(); save(s); return s;
+}
+function save(d){ try{ localStorage.setItem(KEY, JSON.stringify(d||db)); }catch(e){} }
+function resetAll(){ localStorage.removeItem(KEY); db = load(); go(state.tab); toast("Data prototipe dikembalikan ke awal","warn"); }
+
+/* ---------- helpers ---------- */
+const prof = id => db.profiles.find(p=>p.id===id) || {name:"?", city:"-", reputation:0};
+const listing = id => db.listings.find(l=>l.id===id);
+const myListings = () => db.listings.filter(l=>l.ownerId===ME);
+const incoming = () => db.offers.filter(o=>{const t=listing(o.targetListingId); return t && t.ownerId===ME});
+const outgoing = () => db.offers.filter(o=>o.proposerId===ME);
+const openStatuses = ["Diajukan","Negosiasi","Disetujui"];
+const pillClass = s => ({"Diajukan":"b","Negosiasi":"o","Disetujui":"p","Selesai":"g","Ditolak":"r","Dibatalkan":"r","Tidak terpilih":""}[s]||"");
+function offerValue(o){ return o.items.reduce((a,i)=>a+i.valueSnapshot,0); }
+function matchReason(l){
+  const mine = myListings().filter(m=>m.status==="aktif");
+  for(const w of (l.wants||[])){
+    for(const m of mine){
+      const catOk = w.category===m.category;
+      const kwOk = w.keyword && m.title.toLowerCase().includes(String(w.keyword).toLowerCase().split(" ")[0]);
+      const valOk = (!w.min || m.appraisedValue>=w.min*0.8) && (!w.max || m.appraisedValue<=w.max*1.25);
+      if((catOk||kwOk) && valOk) return {listing:m, want:w};
+    }
+  }
+  return null;
+}
+
+/* ---------- toast ---------- */
+function toast(msg, kind){
+  const el = document.createElement("div");
+  el.className = "toast" + (kind ? " "+kind : "");
+  el.textContent = msg;
+  document.getElementById("toasts").appendChild(el);
+  setTimeout(()=>el.remove(), 3600);
+}
+
+/* ---------- router ---------- */
+const state = {tab:"beranda", q:"", cat:"Semua", cond:"Semua", city:"Semua", vmax:0, sort:"baru", box:"masuk", openOffer:null};
+const TABS = [
+  {id:"beranda", label:"Beranda"},
+  {id:"cocok", label:"Cocok untukmu"},
+  {id:"penawaran", label:"Penawaran"},
+  {id:"tambah", label:"Tambah barang"},
+  {id:"profil", label:"Profil"}
+];
+function go(tab){ state.tab = tab; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+function renderTabs(){
+  const n = incoming().filter(o=>openStatuses.includes(o.status)).length;
+  document.getElementById("tabs").innerHTML = TABS.map(t=>
+    '<button role="tab" aria-selected="'+(state.tab===t.id)+'" onclick="go(\''+t.id+'\')">'+t.label
+    + (t.id==="penawaran" && n ? '<span class="badge">'+n+'</span>' : '') + '</button>').join("");
+}
+
+/* ---------- views ---------- */
+function render(){
+  const me = prof(ME);
+  document.getElementById("meAvatar").textContent = initials(me.name);
+  document.getElementById("meName").textContent = me.name;
+  document.getElementById("meCity").textContent = me.city + " · ★ " + me.reputation.toFixed(1);
+  renderTabs();
+  const v = document.getElementById("view");
+  v.innerHTML = ({beranda:viewBeranda, cocok:viewCocok, penawaran:viewPenawaran, tambah:viewTambah, profil:viewProfil}[state.tab])();
+  const s = document.getElementById("q"); if(s){ s.value = state.q; }
+  paintPhotos();
+}
+
+function filtered(){
+  let rows = db.listings.filter(l=>l.ownerId!==ME && (l.status==="aktif"||l.status==="dicadangkan"));
+  const q = state.q.trim().toLowerCase();
+  if(q) rows = rows.filter(l=>(l.title+" "+l.category+" "+l.description+" "+l.city).toLowerCase().includes(q));
+  if(state.cat!=="Semua") rows = rows.filter(l=>l.category===state.cat);
+  if(state.cond!=="Semua") rows = rows.filter(l=>l.condition===state.cond);
+  if(state.city!=="Semua") rows = rows.filter(l=>l.city===state.city);
+  if(state.vmax) rows = rows.filter(l=>l.appraisedValue<=state.vmax);
+  rows.sort((a,b)=> state.sort==="murah" ? a.appraisedValue-b.appraisedValue
+    : state.sort==="mahal" ? b.appraisedValue-a.appraisedValue : b.createdAt-a.createdAt);
+  return rows;
+}
+
+function viewBeranda(){
+  const rows = filtered();
+  const aktif = db.listings.filter(l=>l.status==="aktif").length;
+  const selesai = db.offers.filter(o=>o.status==="Selesai").length + db.transactions.length;
+  return `
+  <section class="hero">
+    <div class="wrap inner">
+      <div>
+        <span class="eyebrow">Barter Item &amp; Value Antar Komunitas</span>
+        <h1>Tukar gear yang menganggur<br>jadi gear yang kamu butuh.</h1>
+        <p>Tawarkan barang, cantumkan nilai taksasi, sebut barang incaranmu. BIVAK mencocokkan barter dan menghitung selisih nilai secara transparan.</p>
+        <div class="searchbar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7D7A75" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="q" placeholder="Cari carrier, tenda, sepatu gunung…" oninput="state.q=this.value; document.getElementById('results').innerHTML=cardsHTML(filtered()); document.getElementById('count').textContent=filtered().length">
+          <button class="btn primary" onclick="go('cocok')">Cocokkan barter</button>
+        </div>
+        <div class="stats">
+          <span class="stat"><b>${aktif}</b> listing aktif</span>
+          <span class="stat"><b>${db.profiles.length}</b> anggota komunitas</span>
+          <span class="stat"><b>${selesai}</b> barter selesai</span>
+          <span class="stat">Makassar · Gowa · Maros · Takalar</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="tile t1">${art("Carrier",1)}</div>
+        <div class="tile t2">${art("Tenda",2)}</div>
+        <div class="tile t3">${art("Sepatu gunung",3)}</div>
+        <div class="swap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div>
+      </div>
+    </div>
+  </section>
+  <main class="wrap">
+    <div class="chips">
+      ${["Semua"].concat(CATS).map(c=>`<button class="chip" aria-pressed="${state.cat===c}" onclick="state.cat='${c}';render()">${c}</button>`).join("")}
+    </div>
+    <div class="toolbar">
+      <div class="field"><label for="fc">Kondisi</label><select id="fc" onchange="state.cond=this.value;render()">${["Semua"].concat(CONDS).map(c=>`<option ${state.cond===c?"selected":""}>${c}</option>`).join("")}</select></div>
+      <div class="field"><label for="fk">Kota</label><select id="fk" onchange="state.city=this.value;render()">${["Semua"].concat(CITIES).map(c=>`<option ${state.city===c?"selected":""}>${c}</option>`).join("")}</select></div>
+      <div class="field"><label for="fv">Nilai maksimum</label><select id="fv" onchange="state.vmax=+this.value;render()">
+        ${[[0,"Tanpa batas"],[300000,"≤ Rp300.000"],[600000,"≤ Rp600.000"],[1000000,"≤ Rp1.000.000"],[2000000,"≤ Rp2.000.000"]].map(([v,t])=>`<option value="${v}" ${state.vmax===v?"selected":""}>${t}</option>`).join("")}
+      </select></div>
+      <div class="field"><label for="fs">Urutkan</label><select id="fs" onchange="state.sort=this.value;render()">
+        <option value="baru" ${state.sort==="baru"?"selected":""}>Terbaru</option>
+        <option value="murah" ${state.sort==="murah"?"selected":""}>Nilai terendah</option>
+        <option value="mahal" ${state.sort==="mahal"?"selected":""}>Nilai tertinggi</option>
+      </select></div>
+    </div>
+    <div class="section-head">
+      <div><h2>Listing komunitas</h2><p><span id="count">${rows.length}</span> barang siap dibarter · 20 item per halaman</p></div>
+      <span class="spacer"></span>
+      <button class="btn sm" onclick="resetAll()">Reset data contoh</button>
+    </div>
+    <div class="grid" id="results">${cardsHTML(rows)}</div>
+  </main>`;
+}
+
+function cardsHTML(rows){
+  if(!rows.length) return `<div class="empty" style="grid-column:1/-1"><b>Belum ada yang cocok</b>Coba ubah kata kunci, kategori, atau rentang nilai.</div>`;
+  return rows.map(l=>{
+    const o = prof(l.ownerId), m = matchReason(l), w = (l.wants||[])[0];
+    const dicad = l.status==="dicadangkan";
+    return `<article class="card hoverable">
+      <div class="thumb">
+        ${thumbOf(l)}
+        <div class="tags"><span class="tag b">${esc(l.category)}</span>${dicad?'<span class="tag o">Dicadangkan</span>':''}</div>
+        <button class="fav" aria-label="Favorit" onclick="toggleFav('${l.id}')">${l.favorite?"♥":"♡"}</button>
+      </div>
+      <div class="body">
+        <h4>${esc(l.title)}</h4>
+        <div class="meta"><span>${esc(l.condition)}</span>·<span>${esc(l.city)}</span>·<span>${ago(l.createdAt)}</span></div>
+        <div class="value">${rp(l.appraisedValue)}<span style="font-size:12.5px;color:var(--muted);font-weight:400"> nilai taksasi</span></div>
+        ${w?`<div class="wants">Incaran: <b>${esc(w.category)}</b>${w.keyword?" · "+esc(w.keyword):""}</div>`:""}
+        ${m?`<div class="match">✓ Cocok dengan <b>${esc(m.listing.title)}</b></div>`:""}
+        <div class="foot">
+          <button class="btn sm" onclick="openDetail('${l.id}')">Detail</button>
+          <button class="btn sm primary" onclick="openDetail('${l.id}',true)" ${dicad?"disabled":""}>Ajukan barter</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function viewCocok(){
+  const pairs = db.listings.filter(l=>l.ownerId!==ME && l.status==="aktif").map(l=>({l, m:matchReason(l)})).filter(x=>x.m);
+  const mine = myListings().filter(l=>l.status==="aktif");
+  return `<main class="wrap">
+    <div class="section-head"><div><h2>Cocok untukmu</h2><p>Pencocokan dua arah: barang incaran mereka dibandingkan dengan ${mine.length} barang aktif milikmu.</p></div></div>
+    ${pairs.length? `<div class="grid two">${pairs.map(({l,m})=>{
+      const diff = l.appraisedValue - m.listing.appraisedValue;
+      return `<article class="card pad hoverable">
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+          <div style="width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${thumbOf(m.listing)}</div>
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--blue-soft);display:grid;place-items:center;color:#1d5f9f;flex:0 0 auto">⇄</div>
+          <div style="width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${thumbOf(l)}</div>
+          <div style="flex:1">
+            <div style="font-size:13px;color:var(--muted)">Barangmu</div>
+            <b>${esc(m.listing.title)}</b>
+            <div style="font-size:13px;color:var(--muted);margin-top:6px">Ditukar dengan</div>
+            <b>${esc(l.title)}</b>
+          </div>
+        </div>
+        <div class="match">✓ ${esc(prof(l.ownerId).name)} mencari <b>${esc(m.want.category)}</b>${m.want.keyword?" · "+esc(m.want.keyword):""}</div>
+        <div class="calc" style="margin-top:12px">
+          <div class="line"><span>Nilai barangmu</span><b>${rp(m.listing.appraisedValue)}</b></div>
+          <div class="line"><span>Nilai barang mereka</span><b>${rp(l.appraisedValue)}</b></div>
+          <div class="line total"><span>${diff>0?"Kamu perlu menambah":diff<0?"Kamu berpotensi menerima":"Nilai seimbang"}</span><b>${rp(Math.abs(diff))}</b></div>
+        </div>
+        <div class="foot" style="margin-top:14px;display:flex;gap:8px">
+          <button class="btn sm" onclick="openDetail('${l.id}')">Lihat barang</button>
+          <button class="btn sm primary" onclick="openDetail('${l.id}',true,'${m.listing.id}')">Ajukan barter</button>
+        </div>
+      </article>`;
+    }).join("")}</div>`
+    : `<div class="empty"><b>Belum ada pasangan barter</b>Tambahkan barang aktif dan isi nilai taksasi supaya BIVAK bisa mencocokkan wishlist komunitas.<div style="margin-top:16px"><button class="btn primary" onclick="go('tambah')">Tambah barang</button></div></div>`}
+  </main>`;
+}
+
+function viewPenawaran(){
+  const rows = state.box==="masuk" ? incoming() : outgoing();
+  rows.sort((a,b)=>b.createdAt-a.createdAt);
+  return `<main class="wrap">
+    <div class="section-head"><div><h2>Penawaran barter</h2><p>Alur status: Diajukan → Negosiasi → Disetujui → Pertemuan → Selesai</p></div></div>
+    <div class="chips">
+      <button class="chip" aria-pressed="${state.box==="masuk"}" onclick="state.box='masuk';render()">Masuk (${incoming().length})</button>
+      <button class="chip" aria-pressed="${state.box==="terkirim"}" onclick="state.box='terkirim';render()">Terkirim (${outgoing().length})</button>
+    </div>
+    ${rows.length? `<div class="grid two">${rows.map(o=>offerCard(o)).join("")}</div>`
+      : `<div class="empty"><b>Belum ada penawaran ${state.box==="masuk"?"masuk":"terkirim"}</b>Jelajahi listing komunitas lalu ajukan barter.<div style="margin-top:16px"><button class="btn primary" onclick="go('beranda')">Jelajah listing</button></div></div>`}
+  </main>`;
+}
+
+function offerCard(o){
+  const t = listing(o.targetListingId), give = o.items.map(i=>listing(i.listingId)).filter(Boolean);
+  const iAmOwner = t && t.ownerId===ME;
+  const counterpart = iAmOwner ? prof(o.proposerId) : prof(t?t.ownerId:"");
+  const last = o.messages[o.messages.length-1];
+  const diff = (t?t.appraisedValue:0) - offerValue(o);
+  return `<article class="card pad hoverable">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span class="pill ${pillClass(o.status)}">${o.status}</span>
+      <span style="font-size:13px;color:var(--muted)">${iAmOwner?"Masuk":"Terkirim"} · ${ago(o.createdAt)}</span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="width:64px;height:64px;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${give[0]?thumbOf(give[0]):""}</div>
+      <div style="color:var(--muted)">⇄</div>
+      <div style="width:64px;height:64px;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${t?thumbOf(t):""}</div>
+      <div style="flex:1;font-size:14.5px">
+        <b>${esc(give.map(g=>g.title).join(" + ")||"—")}</b>
+        <div style="color:var(--muted)">untuk <b style="color:var(--text)">${esc(t?t.title:"—")}</b></div>
+        <div style="color:var(--muted);font-size:13px;margin-top:4px">dengan ${esc(counterpart.name)} · ★ ${counterpart.reputation.toFixed(1)}</div>
+      </div>
+    </div>
+    <div class="calc" style="margin-top:14px">
+      <div class="line"><span>Nilai ditawarkan</span><b>${rp(offerValue(o))}</b></div>
+      <div class="line"><span>Nilai diminta</span><b>${rp(t?t.appraisedValue:0)}</b></div>
+      <div class="line total"><span>Selisih nilai</span><b>${diff===0?"Seimbang":rp(Math.abs(diff))+(diff>0?" kurang":" lebih")}</b></div>
+      ${o.cashAdjustment?`<div class="line"><span>Usulan tunai</span><b>${rp(Math.abs(o.cashAdjustment))} ${o.cashAdjustment>0?"dari penawar":"dari pemilik"}</b></div>`:""}
+    </div>
+    ${last?`<div style="margin-top:12px;font-size:13.5px;color:var(--muted)">💬 ${esc(last.body.slice(0,90))}${last.body.length>90?"…":""}</div>`:""}
+    <div style="margin-top:14px"><button class="btn sm primary" onclick="openOffer('${o.id}')">Buka negosiasi</button></div>
+  </article>`;
+}
+
+function viewTambah(){
+  return `<main class="wrap">
+    <div class="section-head"><div><h2>Tambah barang</h2><p>Maksimal 3 foto per listing (dikompres ke ±300 KB), nilai taksasi dalam Rupiah, dan barang incaran agar pencocokan bekerja.</p></div></div>
+    <div class="grid two" style="align-items:start">
+      <form class="card pad" onsubmit="submitListing(event)" style="display:grid;gap:16px">
+        <div class="field"><label for="t">Judul barang</label><input id="t" required placeholder="Contoh: Carrier Consina Alpine 60L"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field"><label for="c">Kategori</label><select id="c">${CATS.map(c=>`<option>${c}</option>`).join("")}</select></div>
+          <div class="field"><label for="k">Kondisi</label><select id="k">${CONDS.map(c=>`<option>${c}</option>`).join("")}</select></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field"><label for="v">Nilai taksasi (Rp)</label><input id="v" type="number" min="10000" step="10000" required placeholder="850000"></div>
+          <div class="field"><label for="kt">Kota transaksi</label><select id="kt">${CITIES.map(c=>`<option ${prof(ME).city===c?"selected":""}>${c}</option>`).join("")}</select></div>
+        </div>
+        <div class="field"><label for="d">Deskripsi</label><textarea id="d" placeholder="Riwayat pemakaian, kelengkapan, cacat yang perlu diketahui…"></textarea></div>
+        <div class="field">
+          <label>Foto (maksimal 3)</label>
+          <div class="photos" id="photos"></div>
+          <input id="file" type="file" accept="image/*" multiple hidden onchange="addPhotos(this.files)">
+          <button type="button" class="btn sm" onclick="document.getElementById('file').click()">Pilih foto</button>
+          <span class="hint">Tanpa foto, BIVAK memakai ilustrasi kategori otomatis.</span>
+        </div>
+        <h3 class="k" style="margin:4px 0 0">Barang incaran</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field"><label for="wc">Kategori incaran</label><select id="wc">${CATS.map(c=>`<option>${c}</option>`).join("")}</select></div>
+          <div class="field"><label for="wk">Kata kunci</label><input id="wk" placeholder="ultralight, ukuran 42, 60L"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field"><label for="wmin">Nilai minimum</label><input id="wmin" type="number" step="50000" placeholder="300000"></div>
+          <div class="field"><label for="wmax">Nilai maksimum</label><input id="wmax" type="number" step="50000" placeholder="900000"></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn primary" type="submit">Publikasikan listing</button>
+          <button class="btn" type="button" onclick="go('profil')">Lihat barang saya</button>
+        </div>
+      </form>
+      <aside style="display:grid;gap:16px">
+        <div class="card pad">
+          <h3 class="k">Aturan listing MVP</h3>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;color:#55524e;line-height:1.7">
+            <li>Maksimal 5 listing baru per hari per akun.</li>
+            <li>Foto divalidasi jenis, ukuran, dan jumlah sebelum unggah.</li>
+            <li>Nilai taksasi adalah referensi negosiasi, bukan saldo digital.</li>
+            <li>Selisih nilai disepakati langsung antar pengguna.</li>
+          </ul>
+        </div>
+        <div class="card pad" style="background:var(--orange-soft);border-color:#f2ddc7">
+          <b>BIVAK bukan escrow</b>
+          <p style="margin:6px 0 0;font-size:14.5px;color:#7a4a1d">Aplikasi tidak memproses pembayaran dan tidak menjamin pengiriman. Pertemuan dan pengiriman diatur oleh kedua pihak.</p>
+        </div>
+      </aside>
+    </div>
+  </main>`;
+}
+
+let draftPhotos = [];
+function paintPhotos(){
+  const box = document.getElementById("photos"); if(!box) return;
+  const slots = [0,1,2].map(i=> draftPhotos[i]
+    ? `<div class="photo"><img src="${draftPhotos[i]}" alt="Foto ${i+1}"><button type="button" class="x" aria-label="Hapus foto" onclick="draftPhotos.splice(${i},1);paintPhotos()">✕</button></div>`
+    : `<div class="photo">Slot ${i+1}</div>`);
+  box.innerHTML = slots.join("");
+}
+function addPhotos(files){
+  [...files].slice(0, 3-draftPhotos.length).forEach(f=>{
+    if(!f.type.startsWith("image/")){ toast("Hanya file gambar yang diizinkan","warn"); return; }
+    const r = new FileReader();
+    r.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const cv = document.createElement("canvas");
+        const s = Math.min(1, 900/Math.max(img.width,img.height));
+        cv.width = img.width*s; cv.height = img.height*s;
+        cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
+        draftPhotos.push(cv.toDataURL("image/webp",.72)); paintPhotos();
+      };
+      img.src = e.target.result;
+    };
+    r.readAsDataURL(f);
+  });
+  if(files.length > 3-draftPhotos.length) toast("Maksimal 3 foto per listing","warn");
+}
+
+function submitListing(ev){
+  ev.preventDefault();
+  const g = id => document.getElementById(id).value;
+  const today = db.listings.filter(l=>l.ownerId===ME && Date.now()-l.createdAt < 864e5).length;
+  if(today >= 5){ toast("Batas 5 listing baru per hari tercapai","warn"); return; }
+  const val = +g("v");
+  if(!val || val < 10000){ toast("Nilai taksasi minimal Rp10.000","warn"); return; }
+  const l = {
+    id:uid("l"), ownerId:ME, title:g("t").trim(), category:g("c"), condition:g("k"),
+    appraisedValue:val, city:g("kt"), description:g("d").trim(), status:"aktif",
+    photos:draftPhotos.slice(0,3), favorite:false, createdAt:Date.now(),
+    wants:[{category:g("wc"), keyword:g("wk").trim(), min:+g("wmin")||0, max:+g("wmax")||0}]
+  };
+  db.listings.unshift(l); save(); draftPhotos = [];
+  toast("Listing dipublikasikan · status Aktif","ok");
+  go("profil");
+}
+
+function viewProfil(){
+  const me = prof(ME), mine = myListings();
+  const done = db.offers.filter(o=>o.status==="Selesai" && (o.proposerId===ME || (listing(o.targetListingId)||{}).ownerId===ME));
+  const favs = db.listings.filter(l=>l.favorite);
+  return `<main class="wrap">
+    <div class="card pad" style="display:flex;flex-direction:row;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:24px">
+      <span class="avatar lg">${initials(me.name)}</span>
+      <div style="flex:1;min-width:200px">
+        <div style="display:flex;align-items:center;gap:8px"><b style="font-size:19px">${esc(me.name)}</b>${me.verified?'<span class="pill g">Terverifikasi komunitas</span>':""}</div>
+        <div style="color:var(--muted);font-size:14.5px">${esc(me.city)} · ★ ${me.reputation.toFixed(1)} dari ${me.deals} barter · akun Pintu Angin</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="stat" style="background:var(--soft)"><b>${mine.filter(l=>l.status==="aktif").length}</b> aktif</span>
+        <span class="stat" style="background:var(--soft)"><b>${mine.filter(l=>l.status==="dicadangkan").length}</b> dicadangkan</span>
+        <span class="stat" style="background:var(--soft)"><b>${done.length}</b> selesai</span>
+        <span class="stat" style="background:var(--soft)"><b>${favs.length}</b> favorit</span>
+      </div>
+    </div>
+    <div class="section-head"><div><h2>Barang saya</h2><p>Kelola listing, arsipkan yang sudah tidak tersedia.</p></div></div>
+    ${mine.length? `<div class="grid">${mine.map(l=>`<article class="card">
+      <div class="thumb">${thumbOf(l)}<div class="tags"><span class="tag b">${esc(l.category)}</span><span class="tag ${l.status==="aktif"?"g":l.status==="dicadangkan"?"o":""}">${l.status}</span></div></div>
+      <div class="body">
+        <h4>${esc(l.title)}</h4>
+        <div class="meta"><span>${esc(l.condition)}</span>·<span>${esc(l.city)}</span></div>
+        <div class="value">${rp(l.appraisedValue)}</div>
+        ${(l.wants||[])[0]?`<div class="wants">Incaran: <b>${esc(l.wants[0].category)}</b>${l.wants[0].keyword?" · "+esc(l.wants[0].keyword):""}</div>`:""}
+        <div class="foot">
+          <button class="btn sm" onclick="openDetail('${l.id}')">Lihat</button>
+          ${l.status==="aktif"?`<button class="btn sm" onclick="archive('${l.id}')">Arsipkan</button>`:l.status==="arsip"?`<button class="btn sm ok" onclick="unarchive('${l.id}')">Aktifkan</button>`:""}
+        </div>
+      </div></article>`).join("")}</div>`
+      : `<div class="empty"><b>Belum ada barang</b>Tambahkan gear pertamamu agar bisa dipasangkan dengan wishlist komunitas.</div>`}
+    <div class="section-head" style="margin-top:36px"><div><h2>Riwayat barter</h2><p>Transaksi yang sudah dinyatakan selesai kedua pihak.</p></div></div>
+    ${done.length? `<div class="grid two">${done.map(o=>offerCard(o)).join("")}</div>`
+      : `<div class="empty"><b>Belum ada barter selesai</b>Selesaikan satu penawaran untuk membangun reputasi.</div>`}
+  </main>`;
+}
+
+/* ---------- aksi listing ---------- */
+function toggleFav(id){ const l=listing(id); l.favorite=!l.favorite; save(); render(); toast(l.favorite?"Ditambahkan ke favorit":"Dihapus dari favorit"); }
+function archive(id){ listing(id).status="arsip"; save(); render(); toast("Listing diarsipkan"); }
+function unarchive(id){ listing(id).status="aktif"; save(); render(); toast("Listing aktif kembali","ok"); }
+function report(id){
+  db.reports.push({id:uid("r"), reporterId:ME, targetType:"listing", targetId:id, reason:"Perlu ditinjau moderator", status:"baru"});
+  save(); toast("Laporan dikirim ke moderator BIVAK","warn");
+}
+
+/* ---------- sheet ---------- */
+function openSheet(title, html){
+  document.getElementById("sheetTitle").textContent = title;
+  document.getElementById("sheetBody").innerHTML = html;
+  document.getElementById("scrim").hidden = false;
+  document.body.style.overflow = "hidden";
+}
+function closeSheet(){
+  document.getElementById("scrim").hidden = true;
+  document.body.style.overflow = "";
+  state.openOffer = null;
+}
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeSheet(); });
+
+let pick = {targetId:null, items:[], cash:0};
+function openDetail(id, offerMode, preselect){
+  const l = listing(id), o = prof(l.ownerId), mineOwn = l.ownerId===ME;
+  pick = {targetId:id, items: preselect?[preselect]:[], cash:0, cashTouched:false};
+  const w = l.wants||[];
+  const body = `<div class="detail">
+    <div>
+      <div class="gal">${thumbOf(l)}</div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <span class="pill b">${esc(l.category)}</span><span class="pill">${esc(l.condition)}</span>
+        <span class="pill ${l.status==="aktif"?"g":"o"}">${l.status}</span>
+      </div>
+      <p style="margin:16px 0 0;font-size:15px;color:#55524e">${esc(l.description)}</p>
+      <dl class="kv" style="margin-top:16px">
+        <dt>Nilai taksasi</dt><dd><b>${rp(l.appraisedValue)}</b></dd>
+        <dt>Kota transaksi</dt><dd>${esc(l.city)}</dd>
+        <dt>Dipasang</dt><dd>${ago(l.createdAt)}</dd>
+      </dl>
+      ${w.length?`<div class="wants" style="margin-top:16px">Barang incaran: <b>${esc(w[0].category)}</b>${w[0].keyword?" · "+esc(w[0].keyword):""}${w[0].min||w[0].max?` · rentang nilai ${rp(w[0].min)}–${rp(w[0].max)}`:""}</div>`:""}
+      <div style="margin-top:16px;display:flex;gap:8px">
+        <button class="btn sm" onclick="toggleFav('${l.id}');closeSheet()">${l.favorite?"♥ Favorit":"♡ Favoritkan"}</button>
+        <button class="btn sm danger" onclick="report('${l.id}')">Laporkan</button>
+      </div>
+    </div>
+    <div>
+      <div class="owner">
+        <span class="avatar">${initials(o.name)}</span>
+        <span class="n"><b>${esc(o.name)}</b><span>${esc(o.city)} · ★ ${o.reputation.toFixed(1)} · ${o.deals} barter</span></span>
+        ${o.verified?'<span class="pill g">Tepercaya</span>':""}
+      </div>
+      ${mineOwn ? `<div class="empty" style="margin-top:16px"><b>Ini listing milikmu</b>Penawaran masuk akan muncul di tab Penawaran.</div>`
+      : `<h3 class="k" style="margin-top:22px">Ajukan barter</h3>
+        <div id="pickList" style="display:grid;gap:8px"></div>
+        <div class="field" style="margin-top:14px"><label for="cash">Usulan selisih tunai (Rp)</label><input id="cash" type="number" step="10000" value="0" oninput="pick.cash=+this.value||0;pick.cashTouched=true;paintCalc()"><span class="hint">Positif = kamu menambah tunai. Negatif = kamu meminta tambahan.</span></div>
+        <div class="field" style="margin-top:12px"><label for="note">Catatan untuk pemilik</label><textarea id="note" placeholder="Sampaikan kondisi barangmu dan usulan tempat bertemu."></textarea></div>
+        <div id="calcBox" style="margin-top:14px"></div>
+        <button class="btn primary" style="width:100%;margin-top:14px" onclick="submitOffer()">Kirim penawaran barter</button>`}
+    </div>
+  </div>`;
+  openSheet(l.title, body);
+  if(!mineOwn){ paintPick(); paintCalc(); }
+}
+function paintPick(){
+  const avail = myListings().filter(l=>l.status==="aktif");
+  const box = document.getElementById("pickList"); if(!box) return;
+  box.innerHTML = avail.length ? avail.map(l=>`<label class="pickrow">
+      <input type="checkbox" ${pick.items.includes(l.id)?"checked":""} onchange="togglePick('${l.id}',this.checked)">
+      <span style="width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${thumbOf(l)}</span>
+      <span class="t"><b>${esc(l.title)}</b><span>${esc(l.category)} · ${rp(l.appraisedValue)}</span></span>
+    </label>`).join("")
+    : `<div class="empty">Kamu belum punya barang aktif untuk ditawarkan. <button class="btn sm primary" style="margin-top:10px" onclick="closeSheet();go('tambah')">Tambah barang</button></div>`;
+}
+function togglePick(id, on){
+  pick.items = on ? [...new Set([...pick.items, id])] : pick.items.filter(x=>x!==id);
+  paintCalc();
+}
+function paintCalc(){
+  const box = document.getElementById("calcBox"); if(!box) return;
+  const t = listing(pick.targetId);
+  const give = pick.items.map(listing).reduce((a,l)=>a+l.appraisedValue,0);
+  const diff = t.appraisedValue - give;
+  const after = diff - pick.cash;
+  const c = document.getElementById("cash");
+  if(c && !pick.cashTouched){ pick.cash = pick.items.length ? Math.max(0, diff) : 0; c.value = pick.cash; }
+  box.innerHTML = `<div class="calc">
+    <div class="line"><span>Nilai barangmu (${pick.items.length} barang)</span><b>${rp(give)}</b></div>
+    <div class="line"><span>Nilai barang diminta</span><b>${rp(t.appraisedValue)}</b></div>
+    <div class="line"><span>Usulan tunai</span><b>${rp(pick.cash)}</b></div>
+    <div class="line total"><span>${!pick.items.length?"Pilih barang dulu":Math.abs(after)<1?"Penawaran seimbang":after>0?"Masih kurang":"Kelebihan nilai"}</span><b>${!pick.items.length?"—":Math.abs(after)<1?"✓ adil":rp(Math.abs(after))}</b></div>
+  </div>`;
+}
+function submitOffer(){
+  if(!pick.items.length){ toast("Pilih minimal satu barang milikmu","warn"); return; }
+  const t = listing(pick.targetId);
+  if(t.status!=="aktif"){ toast("Listing sedang dicadangkan","warn"); return; }
+  const note = (document.getElementById("note").value||"").trim();
+  const o = {
+    id:uid("o"), targetListingId:t.id, proposerId:ME,
+    items:pick.items.map(id=>({listingId:id, valueSnapshot:listing(id).appraisedValue})),
+    cashAdjustment:pick.cash, note, status:"Diajukan", createdAt:Date.now(),
+    messages:[
+      {id:uid("m"), from:ME, body: note || "Saya ajukan barter untuk barang ini.", at:Date.now()},
+      {id:uid("m"), from:"sys", body:"Penawaran diajukan · menunggu respons pemilik", at:Date.now()}
+    ]
+  };
+  db.offers.unshift(o); save(); closeSheet();
+  state.box = "terkirim"; go("penawaran");
+  toast("Penawaran terkirim ke "+prof(t.ownerId).name,"ok");
+}
+
+/* ---------- negosiasi ---------- */
+const FLOW = ["Diajukan","Negosiasi","Disetujui","Selesai"];
+function openOffer(id){
+  state.openOffer = id;
+  const o = db.offers.find(x=>x.id===id), t = listing(o.targetListingId);
+  const iAmOwner = t.ownerId===ME;
+  const other = iAmOwner ? prof(o.proposerId) : prof(t.ownerId);
+  const idx = FLOW.indexOf(o.status);
+  const closed = ["Ditolak","Dibatalkan","Tidak terpilih","Selesai"].includes(o.status);
+  const acts = [];
+  if(iAmOwner){
+    if(o.status==="Diajukan") acts.push(["Mulai negosiasi","setStatus('"+id+"','Negosiasi')",""],["Setujui barter","setStatus('"+id+"','Disetujui')","ok"],["Tolak","setStatus('"+id+"','Ditolak')","danger"]);
+    if(o.status==="Negosiasi") acts.push(["Setujui barter","setStatus('"+id+"','Disetujui')","ok"],["Tolak","setStatus('"+id+"','Ditolak')","danger"]);
+    if(o.status==="Disetujui") acts.push(["Tandai selesai","setStatus('"+id+"','Selesai')","ok"]);
+  }else{
+    if(o.status==="Diajukan"||o.status==="Negosiasi") acts.push(["Batalkan penawaran","setStatus('"+id+"','Dibatalkan')","danger"]);
+    if(o.status==="Disetujui") acts.push(["Konfirmasi barter selesai","setStatus('"+id+"','Selesai')","ok"]);
+  }
+  const body = `
+    <div class="steps" style="margin-bottom:16px">
+      ${FLOW.map((s,i)=>`<span class="s ${o.status===s?"on":(idx>i?"done":"")}">${s}</span>${i<FLOW.length-1?"<span>→</span>":""}`).join("")}
+      ${closed && o.status!=="Selesai"?`<span class="pill r" style="margin-left:8px">${o.status}</span>`:""}
+    </div>
+    <div class="grid two" style="gap:24px;align-items:start">
+      <div>
+        <div class="owner" style="margin-bottom:14px">
+          <span class="avatar">${initials(other.name)}</span>
+          <span class="n"><b>${esc(other.name)}</b><span>${esc(other.city)} · ★ ${other.reputation.toFixed(1)}</span></span>
+          <span class="pill ${pillClass(o.status)}">${o.status}</span>
+        </div>
+        <h3 class="k">Isi penawaran</h3>
+        <div style="display:grid;gap:8px">
+          ${o.items.map(i=>{const l=listing(i.listingId); return `<div class="pickrow" style="cursor:default">
+            <span style="width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${thumbOf(l)}</span>
+            <span class="t"><b>${esc(l.title)}</b><span>Ditawarkan · ${rp(i.valueSnapshot)}</span></span></div>`}).join("")}
+          <div style="text-align:center;color:var(--muted)">⇅</div>
+          <div class="pickrow" style="cursor:default;border-color:#cfe6f9;background:var(--blue-soft)">
+            <span style="width:44px;height:44px;border-radius:8px;overflow:hidden;border:1px solid var(--border);flex:0 0 auto">${thumbOf(t)}</span>
+            <span class="t"><b>${esc(t.title)}</b><span>Diminta · ${rp(t.appraisedValue)}</span></span></div>
+        </div>
+        <div class="calc" style="margin-top:14px">
+          <div class="line"><span>Total nilai ditawarkan</span><b>${rp(offerValue(o))}</b></div>
+          <div class="line"><span>Usulan tunai</span><b>${rp(Math.abs(o.cashAdjustment))} ${o.cashAdjustment>=0?"dari penawar":"dari pemilik"}</b></div>
+          <div class="line total"><span>Posisi akhir</span><b>${(()=>{const d=t.appraisedValue-offerValue(o)-o.cashAdjustment; return Math.abs(d)<1?"✓ seimbang":rp(Math.abs(d))+(d>0?" kurang":" lebih")})()}</b></div>
+        </div>
+        ${acts.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">${acts.map(([lab,fn,cls])=>`<button class="btn sm ${cls}" onclick="${fn}">${lab}</button>`).join("")}</div>`
+          :`<div class="empty" style="margin-top:14px;padding:18px">Penawaran ini sudah ditutup dengan status <b>${o.status}</b>.</div>`}
+      </div>
+      <div>
+        <h3 class="k">Chat penawaran</h3>
+        <div class="thread" id="thread">
+          ${o.messages.map(m=>m.from==="sys"
+            ? `<div class="msg sys">${esc(m.body)}</div>`
+            : `<div class="msg ${m.from===ME?"mine":""}"><span class="who">${esc(prof(m.from).name)} · ${ago(m.at)}</span>${esc(m.body)}</div>`).join("")}
+        </div>
+        ${closed?`<div class="hint" style="margin-top:12px">Chat ditutup karena penawaran sudah ${o.status.toLowerCase()}.</div>`
+        :`<div class="composer">
+          <input id="msg" placeholder="Tulis pesan…" onkeydown="if(event.key==='Enter')sendMsg('${id}')">
+          <button class="btn primary" onclick="sendMsg('${id}')">Kirim</button>
+        </div>
+        <div class="hint" style="margin-top:8px">Hanya kamu dan ${esc(other.name)} yang dapat membaca chat ini (RLS).</div>`}
+      </div>
+    </div>`;
+  openSheet("Negosiasi barter", body);
+  const th = document.getElementById("thread"); if(th) th.scrollTop = th.scrollHeight;
+}
+function sendMsg(id){
+  const inp = document.getElementById("msg"), body = inp.value.trim();
+  if(!body) return;
+  const o = db.offers.find(x=>x.id===id);
+  o.messages.push({id:uid("m"), from:ME, body, at:Date.now()});
+  if(o.status==="Diajukan") o.status = "Negosiasi";
+  save(); openOffer(id);
+  const other = listing(o.targetListingId).ownerId===ME ? o.proposerId : listing(o.targetListingId).ownerId;
+  setTimeout(()=>{
+    const cur = db.offers.find(x=>x.id===id);
+    if(!cur || ["Ditolak","Dibatalkan","Selesai"].includes(cur.status)) return;
+    const replies = ["Siap, saya cek dulu kondisinya ya.","Bisa. Bagaimana kalau bertemu di Karebosi Sabtu pagi?","Kalau selisihnya bisa dibulatkan, saya setuju.","Boleh kirim foto tambahan bagian jahitan?"];
+    cur.messages.push({id:uid("m"), from:other, body:replies[Math.floor(Math.random()*replies.length)], at:Date.now()});
+    save();
+    if(state.openOffer===id) openOffer(id); else toast(prof(other).name+" mengirim pesan baru");
+  }, 1400);
+}
+function setStatus(id, status){
+  const o = db.offers.find(x=>x.id===id), t = listing(o.targetListingId);
+  o.status = status;
+  o.messages.push({id:uid("m"), from:"sys", body:"Status penawaran berubah menjadi "+status, at:Date.now()});
+  if(status==="Disetujui"){
+    t.status = "dicadangkan";
+    o.items.forEach(i=>{ const l=listing(i.listingId); if(l) l.status="dicadangkan"; });
+    toast("Barter disetujui · barang dicadangkan","ok");
+  }
+  if(status==="Selesai"){
+    t.status = "selesai";
+    o.items.forEach(i=>{ const l=listing(i.listingId); if(l) l.status="selesai"; });
+    db.offers.filter(x=>x.targetListingId===t.id && x.id!==o.id && openStatuses.includes(x.status))
+      .forEach(x=>{ x.status="Tidak terpilih"; x.messages.push({id:uid("m"),from:"sys",body:"Listing sudah selesai dibarter · penawaran tidak terpilih",at:Date.now()}); });
+    db.transactions.push({id:uid("tx"), offerId:o.id, status:"selesai", agreedAt:Date.now(), completedAt:Date.now()});
+    const me = prof(ME); me.deals += 1; me.reputation = Math.min(5, +(me.reputation + .05).toFixed(2));
+    toast("Barter selesai · reputasi diperbarui","ok");
+  }
+  if(status==="Ditolak"||status==="Dibatalkan"){
+    if(t.status==="dicadangkan") t.status="aktif";
+    o.items.forEach(i=>{ const l=listing(i.listingId); if(l && l.status==="dicadangkan") l.status="aktif"; });
+    toast("Penawaran "+status.toLowerCase()+" · listing kembali aktif","warn");
+  }
+  save(); openOffer(id); renderTabs();
+}
+
+render();
+paintPhotos();
+</script>
 </body>
 </html>
