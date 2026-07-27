@@ -6,6 +6,14 @@
 <title>BIVAK — Marketplace Barter Gear Outdoor</title>
 <meta name="description" content="BIVAK — Barter Item & Value Antar Komunitas. Prototipe marketplace barter gear outdoor untuk ekosistem Pintu Angin.">
 <meta name="theme-color" content="#2783DE">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BIVAK — Barter Item &amp; Value Antar Komunitas">
+<meta property="og:description" content="Tukar gear yang menganggur jadi gear yang kamu butuh. Nilai taksasi transparan, selisih dihitung otomatis. Reichas Chelebes × ekosistem Pintu Angin.">
+<meta property="og:image" content="assets/og-bivak.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="assets/og-bivak.png">
 <link rel="icon" href="assets/logo-bivak-256.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/logo-bivak-256.png">
 <style>
@@ -40,8 +48,8 @@ input,select,textarea{font:inherit; color:inherit}
 }
 .appbar .row{display:flex; align-items:center; gap:16px; height:64px}
 .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; flex:0 0 auto}
-.brand .mark{width:34px; height:34px; border-radius:9px; background:var(--blue); display:grid; place-items:center; overflow:hidden; flex:0 0 auto}
-.brand .mark img{width:26px; height:26px; object-fit:contain}
+.brand .mark{width:40px; height:40px; border-radius:9px; background:var(--blue); display:grid; place-items:center; overflow:hidden; flex:0 0 auto}
+.brand .mark img{width:31px; height:31px; object-fit:contain}
 .brand b{font-size:17px; letter-spacing:.02em}
 .brand small{display:block; font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; line-height:1}
 .tabs{display:flex; gap:2px; margin-left:8px; overflow-x:auto; flex:1 1 auto; min-width:0; scrollbar-width:none}
@@ -86,17 +94,17 @@ input,select,textarea{font:inherit; color:inherit}
 /* logo lockup 1:1 */
 .lockup{display:flex; align-items:center; gap:14px; margin-bottom:18px}
 .logo-sq{
-  width:76px; aspect-ratio:1/1; border-radius:18px; background:var(--canvas);
+  width:104px; aspect-ratio:1/1; border-radius:20px; background:var(--canvas);
   border:1px solid var(--border); display:grid; place-items:center; overflow:hidden;
   box-shadow:var(--shadow); flex:0 0 auto;
 }
 .logo-sq img{width:84%; height:84%; object-fit:contain}
 .logo-sq.sm{width:52px; border-radius:12px}
-.emblem{width:64px; height:64px; border-radius:50%; flex:0 0 auto; background:var(--canvas)}
+.emblem{width:88px; height:88px; border-radius:50%; flex:0 0 auto; background:var(--canvas)}
 .emblem.sm{width:34px; height:34px}
 .emblem.xs{width:20px; height:20px; vertical-align:-4px; margin-right:4px}
 .lockup .t{font-size:13.5px; color:var(--muted); line-height:1.35}
-.lockup .t b{display:block; color:var(--text); font-size:15px; letter-spacing:.02em}
+.lockup .t b{display:block; color:var(--text); font-size:18px; letter-spacing:.02em}
 .eyebrow{
   display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600; letter-spacing:.08em;
   text-transform:uppercase; color:var(--blue); background:var(--blue-soft);
@@ -294,8 +302,8 @@ footer .row{display:flex; justify-content:space-between; gap:16px; flex-wrap:wra
   .appbar .row > .btn.primary{display:none}
   .searchbar{padding:10px}
   .lockup{gap:10px; margin-bottom:14px}
-  .logo-sq{width:58px; border-radius:14px}
-  .emblem{width:46px; height:46px}
+  .logo-sq{width:76px; border-radius:16px}
+  .emblem{width:62px; height:62px}
   .lockup .t{font-size:12.5px}
   footer .row{flex-direction:column; align-items:flex-start !important; gap:14px}
   footer .row span{text-align:left !important}
